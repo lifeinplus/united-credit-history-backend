@@ -8,8 +8,13 @@ const getAll = async (req: Request, res: Response) => {
             .sort("userName");
 
         const result = users.map((user) => {
-            const { _id, userName, roles } = user;
-            return { _id, userName, roles: JSON.stringify(roles) };
+            const { _id, creationDate, userName, roles } = user;
+            return {
+                _id,
+                creationDate,
+                userName,
+                roles: JSON.stringify(roles),
+            };
         });
 
         return result.length

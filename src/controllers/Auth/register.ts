@@ -32,6 +32,7 @@ const register = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = await User.create({
+            creationDate: new Date(),
             userName,
             password: hashedPassword,
             roles: { user: ROLE_LIST.user },
