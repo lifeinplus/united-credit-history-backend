@@ -1,8 +1,8 @@
 import express from "express";
-import { Person } from "../controllers";
+import { getByReportId } from "../controllers/PersonController";
 
 const router = express.Router();
 
-router.get("/getByReportId/:reportId", Person.getByReportId);
+router.get("/getByReportId/:reportId", getByReportId);
 
 export = router;

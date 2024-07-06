@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import Logging from "../../library/Logging";
-import { User } from "../../models";
+import { UserModel } from "../../models";
 
 const logout = async (req: Request, res: Response) => {
     const { jwt: refreshToken } = req.cookies;
@@ -10,7 +10,7 @@ const logout = async (req: Request, res: Response) => {
     res.clearCookie("jwt");
 
     try {
-        const foundUser = await User.findOne({ refreshToken });
+        const foundUser = await UserModel.findOne({ refreshToken });
 
         if (foundUser) {
             foundUser.refreshToken = "";

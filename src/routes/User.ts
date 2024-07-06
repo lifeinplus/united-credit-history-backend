@@ -1,9 +1,18 @@
 import express from "express";
-import { User } from "../controllers";
+
+import {
+    deleteById,
+    getAll,
+    getPaginated,
+    updateById,
+} from "../controllers/UserController";
+import { pagination } from "../middleware";
 
 const router = express.Router();
-router.get("/getAll", User.getAll);
-router.put("/updateById", User.updateById);
-router.delete("/deleteById/:id", User.deleteById);
+
+router.get("/getAll", getAll);
+router.get("/getPaginated", pagination, getPaginated);
+router.put("/updateById", updateById);
+router.delete("/deleteById/:id", deleteById);
 
 export = router;

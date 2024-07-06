@@ -1,21 +1,21 @@
-import Common from "./Common";
-import Delinquency from "./Delinquency";
-import Flc from "./Flc";
-import Loan from "./Loan";
-import PaymentHistory from "./PaymentHistory";
-import Person from "./Person";
-import Report from "./Report";
-import RequestCount from "./RequestCount";
-import User from "./User";
+import CommonModel from "./CommonModel";
+import DelinquencyModel from "./DelinquencyModel";
+import FlcModel from "./FlcModel";
+import LoanModel from "./LoanModel";
+import PaymentHistoryModel from "./PaymentHistoryModel";
+import PersonModel from "./PersonModel";
+import ReportModel from "./ReportModel";
+import RequestCountModel from "./RequestCountModel";
+import UserModel from "./UserModel";
 
 export {
-    Common,
-    Delinquency,
-    Flc,
-    Loan,
-    PaymentHistory,
-    Person,
-    Report,
-    RequestCount,
-    User,
+    CommonModel,
+    DelinquencyModel,
+    FlcModel,
+    LoanModel,
+    PaymentHistoryModel,
+    PersonModel,
+    ReportModel,
+    RequestCountModel,
+    UserModel,
 };

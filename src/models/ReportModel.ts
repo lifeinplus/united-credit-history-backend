@@ -9,7 +9,7 @@ interface Report {
     reportCreationDate: string;
 }
 
-interface ReportModel extends Report, Document {}
+interface ReportDocument extends Report, Document {}
 
 const ReportSchema: Schema = new Schema(
     {
@@ -23,4 +23,4 @@ const ReportSchema: Schema = new Schema(
     { versionKey: false }
 );
 
-export default mongoose.model<ReportModel>("reports", ReportSchema);
+export default mongoose.model<ReportDocument>("Report", ReportSchema);

@@ -11,7 +11,7 @@ interface RequestCount {
     microcreditMore1Year: number;
 }
 
-interface RequestCountModel extends RequestCount, Document {}
+interface RequestCountDocument extends RequestCount, Document {}
 
 const RequestCountSchema: Schema = new Schema(
     {
@@ -31,7 +31,7 @@ const RequestCountSchema: Schema = new Schema(
     { versionKey: false }
 );
 
-export default mongoose.model<RequestCountModel>(
-    "requestcounts",
+export default mongoose.model<RequestCountDocument>(
+    "RequestCount",
     RequestCountSchema
 );

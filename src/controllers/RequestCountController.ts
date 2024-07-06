@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { RequestCount } from "../models";
+import { RequestCountModel } from "../models";
 
-const getByReportId = (req: Request, res: Response) => {
+export const getByReportId = (req: Request, res: Response) => {
     const { reportId } = req.params;
 
-    return RequestCount.findOne({ reportId })
+    return RequestCountModel.findOne({ reportId })
+        .select("-__v")
         .then((requestCounts) =>
             requestCounts
                 ? res.status(200).json(requestCounts)
@@ -12,5 +13,3 @@ const getByReportId = (req: Request, res: Response) => {
         )
         .catch((error) => res.status(500).json({ error }));
 };
-
-export default { getByReportId };

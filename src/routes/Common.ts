@@ -1,8 +1,8 @@
 import express from "express";
-import { Common } from "../controllers";
+import { getByReportId } from "../controllers/CommonController";
 
 const router = express.Router();
 
-router.get("/getByReportId/:reportId", Common.getByReportId);
+router.get("/getByReportId/:reportId", getByReportId);
 
 export = router;

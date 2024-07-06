@@ -17,7 +17,7 @@ interface Common {
     score: number;
 }
 
-interface CommonModel extends Common, Document {}
+interface CommonDocument extends Common, Document {}
 
 const CommonSchema: Schema = new Schema(
     {
@@ -52,4 +52,4 @@ const CommonSchema: Schema = new Schema(
     { versionKey: false }
 );
 
-export default mongoose.model<CommonModel>("commons", CommonSchema);
+export default mongoose.model<CommonDocument>("Common", CommonSchema);

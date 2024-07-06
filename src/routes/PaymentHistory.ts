@@ -1,8 +1,8 @@
 import express from "express";
-import { PaymentHistory } from "../controllers";
+import { getByLoanIds } from "../controllers/PaymentHistoryController";
 
 const router = express.Router();
 
-router.get("/getByLoanIds", PaymentHistory.getByLoanIds);
+router.get("/getByLoanIds", getByLoanIds);
 
 export = router;

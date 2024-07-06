@@ -10,7 +10,7 @@ interface Person {
     documentSeries: string;
 }
 
-interface PersonModel extends Person, Document {}
+interface PersonDocument extends Person, Document {}
 
 const PersonSchema: Schema = new Schema(
     {
@@ -32,4 +32,8 @@ const PersonSchema: Schema = new Schema(
     { versionKey: false }
 );
 
-export default mongoose.model<PersonModel>("persons", PersonSchema);
+export default mongoose.model<PersonDocument>(
+    "Person",
+    PersonSchema,
+    "persons"
+);

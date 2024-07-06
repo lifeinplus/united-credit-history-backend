@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 import { config } from "../../config";
 import Logging from "../../library/Logging";
-import { User } from "../../models";
+import { UserModel } from "../../models";
 
 const login = async (req: Request, res: Response) => {
     const { userName, password } = req.body;
@@ -16,7 +16,7 @@ const login = async (req: Request, res: Response) => {
     }
 
     try {
-        const foundUser = await User.findOne({ userName });
+        const foundUser = await UserModel.findOne({ userName });
 
         if (!foundUser) {
             return res

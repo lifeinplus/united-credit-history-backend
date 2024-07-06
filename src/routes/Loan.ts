@@ -1,8 +1,8 @@
 import express from "express";
-import { Loan } from "../controllers";
+import { getByReportId } from "../controllers/LoanController";
 
 const router = express.Router();
 
-router.get("/getByReportId/:reportId", Loan.getByReportId);
+router.get("/getByReportId/:reportId", getByReportId);
 
 export = router;

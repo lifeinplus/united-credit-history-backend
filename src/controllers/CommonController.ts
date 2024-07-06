@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { Common } from "../models";
+import { CommonModel } from "../models";
 
-const getByReportId = (req: Request, res: Response) => {
+export const getByReportId = (req: Request, res: Response) => {
     const { reportId } = req.params;
 
-    return Common.findOne({ reportId })
+    return CommonModel.findOne({ reportId })
+        .select("-__v")
         .then((commons) =>
             commons
                 ? res.status(200).json(commons)
@@ -12,5 +13,3 @@ const getByReportId = (req: Request, res: Response) => {
         )
         .catch((error) => res.status(500).json({ error }));
 };
-
-export default { getByReportId };
