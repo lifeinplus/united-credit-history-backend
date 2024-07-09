@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { Person } from "../models";
+import PersonModel from "../models/PersonModel";
 
-const getByReportId = (req: Request, res: Response) => {
+export const getByReportId = (req: Request, res: Response) => {
     const { reportId } = req.params;
 
-    return Person.find({ reportId })
+    return PersonModel.find({ reportId })
+        .select("-__v")
         .then((persons) =>
             persons.length
                 ? res.status(200).json(persons)
@@ -12,5 +13,3 @@ const getByReportId = (req: Request, res: Response) => {
         )
         .catch((error) => res.status(500).json({ error }));
 };
-
-export default { getByReportId };

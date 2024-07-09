@@ -8,7 +8,7 @@ interface Flc {
     flcUcb: number;
 }
 
-interface FlcModel extends Flc, Document {}
+interface FlcDocument extends Flc, Document {}
 
 const FlcSchema: Schema = new Schema(
     {
@@ -25,4 +25,4 @@ const FlcSchema: Schema = new Schema(
     { versionKey: false }
 );
 
-export default mongoose.model<FlcModel>("flcs", FlcSchema);
+export default mongoose.model<FlcDocument>("Flc", FlcSchema);

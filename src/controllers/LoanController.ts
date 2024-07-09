@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { Loan } from "../models";
+import { LoanModel } from "../models";
 
-const getByReportId = (req: Request, res: Response) => {
+export const getByReportId = (req: Request, res: Response) => {
     const { reportId } = req.params;
 
-    return Loan.find({ reportId })
+    return LoanModel.find({ reportId })
+        .select("-__v")
         .then((loans) =>
             loans.length
                 ? res.status(200).json(loans)
@@ -12,5 +13,3 @@ const getByReportId = (req: Request, res: Response) => {
         )
         .catch((error) => res.status(500).json({ error }));
 };
-
-export default { getByReportId };

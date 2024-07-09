@@ -9,7 +9,7 @@ interface Delinquency {
     delinquencyRefinancing: number;
 }
 
-interface DelinquencyModel extends Delinquency, Document {}
+interface DelinquencyDocument extends Delinquency, Document {}
 
 const DelinquencySchema: Schema = new Schema(
     {
@@ -27,7 +27,7 @@ const DelinquencySchema: Schema = new Schema(
     { versionKey: false }
 );
 
-export default mongoose.model<DelinquencyModel>(
-    "delinquencies",
+export default mongoose.model<DelinquencyDocument>(
+    "Delinquency",
     DelinquencySchema
 );

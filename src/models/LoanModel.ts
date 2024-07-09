@@ -26,7 +26,7 @@ interface Loan {
     unpaidPercentStatus: string;
 }
 
-interface LoanModel extends Loan, Document {}
+interface LoanDocument extends Loan, Document {}
 
 const LoanSchema: Schema = new Schema(
     {
@@ -61,4 +61,4 @@ const LoanSchema: Schema = new Schema(
     { versionKey: false }
 );
 
-export default mongoose.model<LoanModel>("loans", LoanSchema);
+export default mongoose.model<LoanDocument>("Loan", LoanSchema);

@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { PaymentHistory } from "../models";
+import { PaymentHistoryModel } from "../models";
 
-const getByLoanIds = (req: Request, res: Response) => {
+export const getByLoanIds = (req: Request, res: Response) => {
     const { loanIds } = req.query;
 
-    return PaymentHistory.find({
-        loanId: { $in: loanIds },
-    })
+    return PaymentHistoryModel.find({ loanId: { $in: loanIds } })
+        .select("-__v")
         .then((paymentHistories) =>
             paymentHistories.length
                 ? res.status(200).json(paymentHistories)
@@ -16,5 +15,3 @@ const getByLoanIds = (req: Request, res: Response) => {
         )
         .catch((error) => res.status(500).json({ error }));
 };
-
-export default { getByLoanIds };

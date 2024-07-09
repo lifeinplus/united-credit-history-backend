@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { User } from "../models";
+import { UserModel } from "../models";
 
-const getAll = async (req: Request, res: Response) => {
+export const getAll = async (req: Request, res: Response) => {
     try {
-        const users = await User.find()
+        const users = await UserModel.find()
             .select("-password -refreshToken")
-            .sort("userName");
+            .sort("creationDate");
 
         const result = users.map((user) => {
             const { _id, creationDate, userName, roles } = user;
@@ -25,7 +25,42 @@ const getAll = async (req: Request, res: Response) => {
     }
 };
 
-const updateById = async (req: Request, res: Response) => {
+export const getPaginated = async (req: Request, res: Response) => {
+    const { page, limit, skip } = res.locals.paginationOptions;
+
+    try {
+        const total = await UserModel.countDocuments();
+        const totalPages = Math.ceil(total / limit);
+
+        const users = await UserModel.find()
+            .skip(skip)
+            .limit(limit)
+            .select("-password -refreshToken")
+            .sort("creationDate")
+            .exec();
+
+        const results = users.map((user) => {
+            const { _id, creationDate, userName, roles } = user;
+
+            return {
+                _id,
+                creationDate,
+                userName,
+                roles: JSON.stringify(roles),
+            };
+        });
+
+        const result = { results, page, total, totalPages };
+
+        return result.results.length
+            ? res.status(200).json(result)
+            : res.status(404).json({ message: "Users not found" });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+};
+
+export const updateById = async (req: Request, res: Response) => {
     const { id, roles } = req.body;
 
     if (!id) {
@@ -35,7 +70,7 @@ const updateById = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await User.findOne({ _id: id })
+        const user = await UserModel.findOne({ _id: id })
             .select("-password -refreshToken")
             .exec();
 
@@ -53,7 +88,7 @@ const updateById = async (req: Request, res: Response) => {
     }
 };
 
-const deleteById = async (req: Request, res: Response) => {
+export const deleteById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     if (!id) {
@@ -63,7 +98,7 @@ const deleteById = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await User.findOne({ _id: id })
+        const user = await UserModel.findOne({ _id: id })
             .select("-password -refreshToken")
             .exec();
 
@@ -78,5 +113,3 @@ const deleteById = async (req: Request, res: Response) => {
         return res.status(500).json({ error });
     }
 };
-
-export default { getAll, updateById, deleteById };

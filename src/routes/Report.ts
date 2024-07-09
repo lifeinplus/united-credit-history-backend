@@ -1,9 +1,12 @@
 import express from "express";
-import { Report } from "../controllers";
+
+import { getAll, getById, getPaginated } from "../controllers/ReportController";
+import { pagination } from "../middleware";
 
 const router = express.Router();
 
-router.get("/getById/:reportId", Report.getById);
-router.get("/getAll", Report.getAll);
+router.get("/getAll", getAll);
+router.get("/getById/:reportId", getById);
+router.get("/getPaginated", pagination, getPaginated);
 
 export = router;

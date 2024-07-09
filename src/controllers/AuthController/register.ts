@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 import ROLE_LIST from "../../config/role_list";
 import Logging from "../../library/Logging";
-import { User } from "../../models";
+import { UserModel } from "../../models";
 
 const register = async (req: Request, res: Response) => {
     const { userName, password } = req.body;
@@ -21,7 +21,7 @@ const register = async (req: Request, res: Response) => {
     }
 
     try {
-        const foundUser = await User.findOne({ userName });
+        const foundUser = await UserModel.findOne({ userName });
 
         if (foundUser) {
             return res.status(409).json({
@@ -31,7 +31,7 @@ const register = async (req: Request, res: Response) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await User.create({
+        const newUser = await UserModel.create({
             creationDate: new Date(),
             userName,
             password: hashedPassword,

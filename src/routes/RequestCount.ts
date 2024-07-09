@@ -1,8 +1,8 @@
 import express from "express";
-import { RequestCount } from "../controllers";
+import { getByReportId } from "../controllers/RequestCountController";
 
 const router = express.Router();
 
-router.get("/getByReportId/:reportId", RequestCount.getByReportId);
+router.get("/getByReportId/:reportId", getByReportId);
 
 export = router;

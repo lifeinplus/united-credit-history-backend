@@ -8,7 +8,7 @@ interface User {
     roles: Record<string, number>;
 }
 
-interface UserModel extends User, Document {}
+interface UserDocument extends User, Document {}
 
 const UserSchema: Schema = new Schema(
     {
@@ -21,4 +21,4 @@ const UserSchema: Schema = new Schema(
     { versionKey: false }
 );
 
-export default mongoose.model<UserModel>("users", UserSchema);
+export default mongoose.model<UserDocument>("User", UserSchema);

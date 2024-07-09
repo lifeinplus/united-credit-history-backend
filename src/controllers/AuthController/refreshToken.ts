@@ -1,20 +1,20 @@
-import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 import { config } from "../../config";
-import ROLE_LIST from "../../config/role_list";
 import Logging from "../../library/Logging";
-import { User } from "../../models";
+import { UserModel } from "../../models";
 import { UserToken } from "../../types";
 
 const refreshToken = async (req: Request, res: Response) => {
     const { jwt: refreshToken } = req.cookies;
-    if (!refreshToken)
+
+    if (!refreshToken) {
         return res.status(401).json({ message: "refreshToken not found" });
+    }
 
     try {
-        const foundUser = await User.findOne({ refreshToken: refreshToken });
+        const foundUser = await UserModel.findOne({ refreshToken });
 
         if (!foundUser) {
             return res.status(403).json({ message: "user not found" });

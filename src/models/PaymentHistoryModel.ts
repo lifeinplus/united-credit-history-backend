@@ -6,7 +6,7 @@ interface PaymentHistory {
     status: string;
 }
 
-interface PaymentHistoryModel extends PaymentHistory, Document {}
+interface PaymentHistoryDocument extends PaymentHistory, Document {}
 
 const PaymentHistorySchema: Schema = new Schema(
     {
@@ -21,7 +21,7 @@ const PaymentHistorySchema: Schema = new Schema(
     { versionKey: false }
 );
 
-export default mongoose.model<PaymentHistoryModel>(
-    "paymenthistories",
+export default mongoose.model<PaymentHistoryDocument>(
+    "PaymentHistory",
     PaymentHistorySchema
 );

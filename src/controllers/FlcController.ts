@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { Flc } from "../models";
+import { FlcModel } from "../models";
 
-const getByLoanIds = (req: Request, res: Response) => {
+export const getByLoanIds = (req: Request, res: Response) => {
     const { loanIds } = req.query;
 
-    return Flc.find({
-        loanId: { $in: loanIds },
-    })
+    return FlcModel.find({ loanId: { $in: loanIds } })
+        .select("-__v")
         .then((flcs) =>
             flcs.length
                 ? res.status(200).json(flcs)
@@ -14,5 +13,3 @@ const getByLoanIds = (req: Request, res: Response) => {
         )
         .catch((error) => res.status(500).json({ error }));
 };
-
-export default { getByLoanIds };
