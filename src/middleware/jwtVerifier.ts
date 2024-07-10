@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 import { config } from "../config";
 import Logging from "../library/Logging";
-import { UserRequest, UserToken } from "../types";
+import { UserRequest, UserJwtPayload } from "../types";
 
 const jwtVerifier = (req: UserRequest, res: Response, next: NextFunction) => {
     const authorization = req.headers.authorization;
@@ -18,7 +18,7 @@ const jwtVerifier = (req: UserRequest, res: Response, next: NextFunction) => {
         const decoded = jwt.verify(
             token,
             config.token.access.secret
-        ) as UserToken;
+        ) as UserJwtPayload;
 
         req.roles = decoded.roles;
         next();

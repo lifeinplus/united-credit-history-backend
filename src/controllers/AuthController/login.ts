@@ -8,6 +8,7 @@ import { UserModel } from "../../models";
 
 const login = async (req: Request, res: Response) => {
     const { userName, password } = req.body;
+    const cookies = req.cookies;
 
     if (!userName || !password) {
         return res
@@ -16,7 +17,7 @@ const login = async (req: Request, res: Response) => {
     }
 
     try {
-        const foundUser = await UserModel.findOne({ userName });
+        const foundUser = await UserModel.findOne({ userName }).exec();
 
         if (!foundUser) {
             return res
@@ -44,7 +45,25 @@ const login = async (req: Request, res: Response) => {
             { expiresIn: config.token.refresh.expiresIn }
         );
 
-        foundUser.refreshToken = refreshToken;
+        let refreshTokenArray = foundUser.refreshToken.filter(
+            (token) => token !== cookies.jwt
+        );
+
+        if (cookies.jwt) {
+            // Attempted refresh token reuse
+            // Scenario: user logins, doesn't logout and token is stolen
+            const foundToken = await UserModel.findOne({
+                refreshToken: cookies.jwt,
+            }).exec();
+
+            if (!foundToken) {
+                refreshTokenArray = [];
+            }
+
+            res.clearCookie("jwt");
+        }
+
+        foundUser.refreshToken = [...refreshTokenArray, refreshToken];
         await foundUser.save();
 
         return res
