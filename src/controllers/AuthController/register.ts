@@ -21,7 +21,7 @@ const register = async (req: Request, res: Response) => {
     }
 
     try {
-        const foundUser = await UserModel.findOne({ userName });
+        const foundUser = await UserModel.findOne({ userName }).exec();
 
         if (foundUser) {
             return res.status(409).json({

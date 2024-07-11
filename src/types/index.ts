@@ -1,10 +1,11 @@
 import { Request } from "express";
+import { JwtPayload } from "jsonwebtoken";
 
 export interface UserRequest extends Request {
     roles?: number[];
 }
 
-export interface UserToken {
+export interface UserJwtPayload extends JwtPayload {
     userName: string;
     roles: number[];
 }
