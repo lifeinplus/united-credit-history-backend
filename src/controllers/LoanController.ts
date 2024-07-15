@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
-import { LoanModel } from "../models";
+import LoanService from "../services/LoanService";
 
-export const getByReportId = (req: Request, res: Response) => {
+export const getByReportId = async (req: Request, res: Response) => {
     const { reportId } = req.params;
 
-    return LoanModel.find({ reportId })
-        .select("-__v")
-        .then((loans) =>
-            loans.length
-                ? res.status(200).json(loans)
-                : res.status(404).json({ message: "Loans not found" })
-        )
-        .catch((error) => res.status(500).json({ error }));
+    try {
+        const loans = await LoanService.getByReportId(reportId);
+
+        return loans.length
+            ? res.status(200).json(loans)
+            : res.status(404).json({ message: "Loans not found" });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
 };

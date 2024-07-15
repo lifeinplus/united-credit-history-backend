@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
-import { RequestCountModel } from "../models";
+import RequestCountService from "../services/RequestCountService";
 
-export const getByReportId = (req: Request, res: Response) => {
+export const getByReportId = async (req: Request, res: Response) => {
     const { reportId } = req.params;
 
-    return RequestCountModel.findOne({ reportId })
-        .select("-__v")
-        .then((requestCounts) =>
-            requestCounts
-                ? res.status(200).json(requestCounts)
-                : res.status(404).json({ message: "RequestCounts not found" })
-        )
-        .catch((error) => res.status(500).json({ error }));
+    try {
+        const requestCounts = await RequestCountService.getByReportId(reportId);
+
+        return requestCounts
+            ? res.status(200).json(requestCounts)
+            : res.status(404).json({ message: "RequestCounts not found" });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
 };
