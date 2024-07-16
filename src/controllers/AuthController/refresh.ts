@@ -6,12 +6,14 @@ import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 import { UserJwtPayload } from "../../types";
 
-const refreshToken = async (req: Request, res: Response) => {
+const refresh = async (req: Request, res: Response) => {
     const cookies = req.cookies;
 
     if (!cookies.jwt) {
         return res.status(401).json({ message: "Refresh token not found" });
     }
+
+    res.clearCookie("jwt");
 
     let foundUser;
     let refreshTokenArray: string[] = [];
@@ -22,6 +24,22 @@ const refreshToken = async (req: Request, res: Response) => {
         }).exec();
 
         if (!foundUser) {
+            const decoded = jwt.verify(
+                cookies.jwt,
+                config.token.refresh.secret
+            ) as UserJwtPayload;
+
+            Logging.warn("Attempted refresh token reuse at /auth/refresh");
+
+            const hackedUser = await UserModel.findOne({
+                userName: decoded.userName,
+            }).exec();
+
+            if (hackedUser) {
+                hackedUser.refreshToken = [];
+                await hackedUser.save();
+            }
+
             return res.sendStatus(403);
         }
 
@@ -38,7 +56,6 @@ const refreshToken = async (req: Request, res: Response) => {
             return res.status(403).json({ message: "User name incorrect" });
         }
 
-        // Refresh token was still valid
         const roles = Object.values(foundUser.roles || {});
 
         const accessToken = jwt.sign(
@@ -81,4 +98,4 @@ const refreshToken = async (req: Request, res: Response) => {
     }
 };
 
-export default refreshToken;
+export default refresh;
