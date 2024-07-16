@@ -1,17 +1,18 @@
 import { Request, Response } from "express";
-import { PaymentHistoryModel } from "../models";
+import PaymentHistoryService from "../services/PaymentHistoryService";
 
-export const getByLoanIds = (req: Request, res: Response) => {
+export const getByLoanIds = async (req: Request, res: Response) => {
     const { loanIds } = req.query;
 
-    return PaymentHistoryModel.find({ loanId: { $in: loanIds } })
-        .select("-__v")
-        .then((paymentHistories) =>
-            paymentHistories.length
-                ? res.status(200).json(paymentHistories)
-                : res
-                      .status(404)
-                      .json({ message: "PaymentHistories not found" })
-        )
-        .catch((error) => res.status(500).json({ error }));
+    try {
+        const paymentHistories = await PaymentHistoryService.getByLoanIds(
+            loanIds as string | string[]
+        );
+
+        return paymentHistories.length
+            ? res.status(200).json(paymentHistories)
+            : res.status(404).json({ message: "PaymentHistories not found" });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
 };

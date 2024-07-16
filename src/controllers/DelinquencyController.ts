@@ -1,15 +1,18 @@
 import { Request, Response } from "express";
-import { DelinquencyModel } from "../models";
+import DelinquencyService from "../services/DelinquencyService";
 
-export const getByLoanIds = (req: Request, res: Response) => {
+export const getByLoanIds = async (req: Request, res: Response) => {
     const { loanIds } = req.query;
 
-    return DelinquencyModel.find({ loanId: { $in: loanIds } })
-        .select("-__v")
-        .then((delinquencies) =>
-            delinquencies.length
-                ? res.status(200).json(delinquencies)
-                : res.status(404).json({ message: "Delinquencies not found" })
-        )
-        .catch((error) => res.status(500).json({ error }));
+    try {
+        const delinquencies = await DelinquencyService.getByLoanIds(
+            loanIds as string | string[]
+        );
+
+        return delinquencies.length
+            ? res.status(200).json(delinquencies)
+            : res.status(404).json({ message: "Delinquencies not found" });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
 };

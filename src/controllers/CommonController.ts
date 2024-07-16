@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
-import { CommonModel } from "../models";
+import CommonService from "../services/CommonService";
 
-export const getByReportId = (req: Request, res: Response) => {
+export const getByReportId = async (req: Request, res: Response) => {
     const { reportId } = req.params;
 
-    return CommonModel.findOne({ reportId })
-        .select("-__v")
-        .then((commons) =>
-            commons
-                ? res.status(200).json(commons)
-                : res.status(404).json({ message: "Commons not found" })
-        )
-        .catch((error) => res.status(500).json({ error }));
+    try {
+        const commons = await CommonService.getByReportId(reportId);
+
+        return commons
+            ? res.status(200).json(commons)
+            : res.status(404).json({ message: "Commons not found" });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
 };

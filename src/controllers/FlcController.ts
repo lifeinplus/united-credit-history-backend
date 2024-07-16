@@ -1,15 +1,18 @@
 import { Request, Response } from "express";
-import { FlcModel } from "../models";
+import FlcService from "../services/FlcService";
 
-export const getByLoanIds = (req: Request, res: Response) => {
+export const getByLoanIds = async (req: Request, res: Response) => {
     const { loanIds } = req.query;
 
-    return FlcModel.find({ loanId: { $in: loanIds } })
-        .select("-__v")
-        .then((flcs) =>
-            flcs.length
-                ? res.status(200).json(flcs)
-                : res.status(404).json({ message: "Flcs not found" })
-        )
-        .catch((error) => res.status(500).json({ error }));
+    try {
+        const flcs = await FlcService.getByLoanIds(
+            loanIds as string | string[]
+        );
+
+        return flcs.length
+            ? res.status(200).json(flcs)
+            : res.status(404).json({ message: "Flcs not found" });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
 };
