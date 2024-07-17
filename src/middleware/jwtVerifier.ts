@@ -1,5 +1,5 @@
 import { NextFunction, Response } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 
 import { config } from "../config";
 import Logging from "../library/Logging";
@@ -8,13 +8,15 @@ import { UserRequest, UserJwtPayload } from "../types";
 const jwtVerifier = (req: UserRequest, res: Response, next: NextFunction) => {
     const authorization = req.headers.authorization;
 
-    if (!authorization?.startsWith("Bearer ")) {
+    const token = authorization?.startsWith("Bearer ")
+        ? authorization?.replace("Bearer ", "")
+        : undefined;
+
+    if (!token || token === "undefined") {
         return res.sendStatus(401);
     }
 
     try {
-        const token = authorization.split(" ")[1];
-
         const decoded = jwt.verify(
             token,
             config.token.access.secret
@@ -25,7 +27,7 @@ const jwtVerifier = (req: UserRequest, res: Response, next: NextFunction) => {
     } catch (error) {
         Logging.error(error);
 
-        if (error instanceof Error) {
+        if (error instanceof TokenExpiredError) {
             return res
                 .status(403)
                 .json({ message: "jwtVerifier: " + error.message });

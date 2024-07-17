@@ -1,6 +1,6 @@
 import login from "./login";
 import logout from "./logout";
-import refreshToken from "./refreshToken";
+import refresh from "./refresh";
 import register from "./register";
 
-export { login, logout, refreshToken, register };
+export { login, logout, refresh, register };

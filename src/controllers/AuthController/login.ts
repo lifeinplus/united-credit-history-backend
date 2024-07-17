@@ -50,13 +50,16 @@ const login = async (req: Request, res: Response) => {
         );
 
         if (cookies.jwt) {
-            // Attempted refresh token reuse
-            // Scenario: user logins, doesn't logout and token is stolen
+            // Scenario:
+            // 1. User logins, never uses RT, doesn't logout
+            // 2. RT is stolen
+            // 3. Clear all RTs when user logins
             const foundToken = await UserModel.findOne({
                 refreshToken: cookies.jwt,
             }).exec();
 
             if (!foundToken) {
+                Logging.warn("Attempted refresh token reuse at /auth/login");
                 refreshTokenArray = [];
             }
 
