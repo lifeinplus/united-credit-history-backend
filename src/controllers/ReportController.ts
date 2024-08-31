@@ -58,25 +58,29 @@ export const getFullById = async (req: Request, res: Response) => {
 };
 
 export const getPaginated = async (req: Request, res: Response) => {
-    const { page, limit, skip } = res.locals.paginationOptions;
+    const { page, limit, search, skip } = res.locals.paginationOptions;
 
     try {
-        const total = await ReportModel.countDocuments();
+        const total = await ReportModel.countDocuments({
+            clientName: new RegExp(search, "i"),
+        });
+
         const totalPages = Math.ceil(total / limit);
 
-        const reports = await ReportModel.find()
+        const reports = await ReportModel.find({
+            clientName: new RegExp(search, "i"),
+        })
             .skip(skip)
             .limit(limit)
             .select("-__v")
             .sort("appNumber")
             .exec();
 
-        const results = reports;
-        const result = { results, page, total, totalPages };
+        const result = { results: reports, page, total, totalPages };
 
         return result.results.length
             ? res.status(200).json(result)
-            : res.status(404).json({ message: "Reports not found" });
+            : res.sendStatus(204);
     } catch (error) {
         return res.status(500).json({ error });
     }
