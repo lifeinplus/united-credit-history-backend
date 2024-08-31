@@ -26,13 +26,18 @@ export const getAll = async (req: Request, res: Response) => {
 };
 
 export const getPaginated = async (req: Request, res: Response) => {
-    const { page, limit, skip } = res.locals.paginationOptions;
+    const { page, limit, search, skip } = res.locals.paginationOptions;
 
     try {
-        const total = await UserModel.countDocuments();
+        const total = await UserModel.countDocuments({
+            userName: new RegExp(search, "i"),
+        });
+
         const totalPages = Math.ceil(total / limit);
 
-        const users = await UserModel.find()
+        const users = await UserModel.find({
+            userName: new RegExp(search, "i"),
+        })
             .skip(skip)
             .limit(limit)
             .select("-password -refreshToken")
@@ -54,7 +59,7 @@ export const getPaginated = async (req: Request, res: Response) => {
 
         return result.results.length
             ? res.status(200).json(result)
-            : res.status(404).json({ message: "Users not found" });
+            : res.sendStatus(204);
     } catch (error) {
         return res.status(500).json({ error });
     }
