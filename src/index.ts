@@ -40,6 +40,7 @@ const StartServer = () => {
     app.use(cookieParser());
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
+    // app.use(express.json({ limit: 52428800 }));
 
     app.get("/ping", (req, res, next) =>
         res.status(200).json({ message: "pong" })

@@ -37,7 +37,7 @@ const getFullByReportId = async (reportId: string) => {
 
         const firstPaymentDate = filteredHistory.reduce((result, { date }) => {
             return result > date ? date : result;
-        }, filteredHistory[0].date);
+        }, filteredHistory[0]?.date);
 
         const reducedHistory = filteredHistory.reduce((result, item) => {
             const milliseconds = Date.parse(item.date);
