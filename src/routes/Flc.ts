@@ -1,8 +1,15 @@
 import express from "express";
-import { getByLoanIds } from "../controllers/FlcController";
+
+import {
+    addFlc,
+    addFlcByList,
+    getByLoanIds,
+} from "../controllers/FlcController";
 
 const router = express.Router();
 
+router.post("/addFlc", addFlc);
+router.post("/addFlcByList", addFlcByList);
 router.get("/getByLoanIds", getByLoanIds);
 
 export = router;

@@ -7,6 +7,48 @@ import RequestCountService from "../services/RequestCountService";
 import CommonService from "../services/CommonService";
 import LoanService from "../services/LoanService";
 
+export const addReport = async (req: Request, res: Response) => {
+    const report = req.body;
+
+    if (!Object.keys(report).length) {
+        return res.sendStatus(400);
+    }
+
+    try {
+        const result = await ReportModel.create(report);
+        return res.status(201).json(result);
+    } catch (error) {
+        Logging.error(error);
+
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+
+        return res.status(500).json({ error });
+    }
+};
+
+export const addReportsByList = async (req: Request, res: Response) => {
+    const reports = req.body;
+
+    if (!reports.length) {
+        return res.sendStatus(400);
+    }
+
+    try {
+        const result = await ReportModel.insertMany(reports);
+        return res.status(201).json(result);
+    } catch (error) {
+        Logging.error(error);
+
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+
+        return res.status(500).json({ error });
+    }
+};
+
 export const getAll = (req: Request, res: Response) => {
     return ReportModel.find()
         .select("-__v")
