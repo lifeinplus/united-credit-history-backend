@@ -112,4 +112,4 @@ Here are the available scripts for development and production:
 
 ---
 
-v1.6.0 © 2024 Artem Denisov
+v1.7.0 © 2024 Artem Denisov
