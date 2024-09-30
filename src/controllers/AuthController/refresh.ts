@@ -81,7 +81,12 @@ const refresh = async (req: Request, res: Response) => {
                 secure: true,
                 maxAge: 24 * 60 * 60 * 1000,
             })
-            .json({ accessToken, roles, userName: foundUser.userName });
+            .json({
+                accessToken,
+                roles,
+                userId: foundUser._id,
+                userName: foundUser.userName,
+            });
     } catch (error) {
         Logging.error(error);
 

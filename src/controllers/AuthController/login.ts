@@ -77,7 +77,7 @@ const login = async (req: Request, res: Response) => {
                 secure: true,
                 maxAge: 24 * 60 * 60 * 1000,
             })
-            .json({ roles, accessToken });
+            .json({ accessToken, roles, userId: foundUser._id });
     } catch (error) {
         Logging.error(error);
 

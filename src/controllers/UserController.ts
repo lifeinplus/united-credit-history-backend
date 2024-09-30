@@ -1,4 +1,6 @@
 import { Request, Response } from "express";
+
+import Logging from "../library/Logging";
 import { UserModel } from "../models";
 
 export const getAll = async (req: Request, res: Response) => {
@@ -21,6 +23,12 @@ export const getAll = async (req: Request, res: Response) => {
             ? res.status(200).json(result)
             : res.status(404).json({ message: "Users not found" });
     } catch (error) {
+        Logging.error(error);
+
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+
         return res.status(500).json({ error });
     }
 };
@@ -61,6 +69,12 @@ export const getPaginated = async (req: Request, res: Response) => {
             ? res.status(200).json(result)
             : res.sendStatus(204);
     } catch (error) {
+        Logging.error(error);
+
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+
         return res.status(500).json({ error });
     }
 };
@@ -83,12 +97,20 @@ export const updateById = async (req: Request, res: Response) => {
             return res.sendStatus(204);
         }
 
-        if (roles) user.roles = JSON.parse(roles);
+        if (roles) {
+            user.roles = JSON.parse(roles);
+        }
 
         const result = await user.save();
 
         return res.json(result);
     } catch (error) {
+        Logging.error(error);
+
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+
         return res.status(500).json({ error });
     }
 };
@@ -115,6 +137,12 @@ export const deleteById = async (req: Request, res: Response) => {
 
         return res.json(result);
     } catch (error) {
+        Logging.error(error);
+
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+
         return res.status(500).json({ error });
     }
 };

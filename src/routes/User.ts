@@ -6,6 +6,7 @@ import {
     getPaginated,
     updateById,
 } from "../controllers/UserController";
+
 import { pagination } from "../middleware";
 
 const router = express.Router();
