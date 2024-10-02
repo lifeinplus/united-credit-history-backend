@@ -6,6 +6,7 @@ import PersonService from "../services/PersonService";
 import RequestCountService from "../services/RequestCountService";
 import CommonService from "../services/CommonService";
 import LoanService from "../services/LoanService";
+import type { PaginationOptions } from "../types";
 
 export const addReport = async (req: Request, res: Response) => {
     const report = req.body;
@@ -100,7 +101,8 @@ export const getFullById = async (req: Request, res: Response) => {
 };
 
 export const getPaginated = async (req: Request, res: Response) => {
-    const { page, limit, search, skip } = res.locals.paginationOptions;
+    const { page, limit, search, skip, from, to }: PaginationOptions =
+        res.locals.paginationOptions;
 
     try {
         const total = await ReportModel.countDocuments({
@@ -108,6 +110,7 @@ export const getPaginated = async (req: Request, res: Response) => {
         });
 
         const totalPages = Math.ceil(total / limit);
+        const toEntry = to > total ? total : to;
 
         const reports = await ReportModel.find({
             clientName: new RegExp(search, "i"),
@@ -118,7 +121,14 @@ export const getPaginated = async (req: Request, res: Response) => {
             .sort("appNumber")
             .exec();
 
-        const result = { results: reports, page, total, totalPages };
+        const result = {
+            results: reports,
+            page,
+            total,
+            totalPages,
+            fromEntry: from,
+            toEntry,
+        };
 
         return result.results.length
             ? res.status(200).json(result)
