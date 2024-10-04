@@ -101,8 +101,16 @@ export const getFullById = async (req: Request, res: Response) => {
 };
 
 export const getPaginated = async (req: Request, res: Response) => {
-    const { page, limit, search, skip, from, to }: PaginationOptions =
-        res.locals.paginationOptions;
+    const {
+        page,
+        limit,
+        search,
+        skip,
+        from,
+        to,
+        sort,
+        order,
+    }: PaginationOptions = res.locals.paginationOptions;
 
     try {
         const total = await ReportModel.countDocuments({
@@ -118,7 +126,7 @@ export const getPaginated = async (req: Request, res: Response) => {
             .skip(skip)
             .limit(limit)
             .select("-__v")
-            .sort("appNumber")
+            .sort({ [sort]: order })
             .exec();
 
         const result = {
