@@ -113,4 +113,4 @@ Here are the available scripts for development and production:
 
 ---
 
-v1.9.0 © 2024 Artem Denisov
+v1.10.0 © 2024 Artem Denisov
