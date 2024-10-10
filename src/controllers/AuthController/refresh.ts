@@ -43,7 +43,9 @@ const refresh = async (req: Request, res: Response) => {
             return res.sendStatus(403);
         }
 
-        refreshTokenArray = foundUser.refreshToken.filter(
+        const { _id, avatarPath, refreshToken, roles, userName } = foundUser;
+
+        refreshTokenArray = refreshToken.filter(
             (token) => token !== cookies.jwt
         );
 
@@ -52,40 +54,41 @@ const refresh = async (req: Request, res: Response) => {
             config.token.refresh.secret
         ) as UserJwtPayload;
 
-        if (decoded.userName !== foundUser.userName) {
+        if (decoded.userName !== userName) {
             return res.status(403).json({ message: "User name incorrect" });
         }
 
-        const roles = Object.values(foundUser.roles || {});
+        const roleValues = Object.values(roles || {});
 
-        const accessToken = jwt.sign(
-            { userName: decoded.userName, roles },
+        const newAccessToken = jwt.sign(
+            { userName: decoded.userName, roles: roleValues },
             config.token.access.secret,
             { expiresIn: config.token.access.expiresIn }
         );
 
-        const refreshToken = jwt.sign(
-            { userName: foundUser.userName },
+        const newRefreshToken = jwt.sign(
+            { userName },
             config.token.refresh.secret,
             { expiresIn: config.token.refresh.expiresIn }
         );
 
-        foundUser.refreshToken = [...refreshTokenArray, refreshToken];
+        foundUser.refreshToken = [...refreshTokenArray, newRefreshToken];
         await foundUser.save();
 
         return res
             .status(200)
-            .cookie("jwt", refreshToken, {
+            .cookie("jwt", newRefreshToken, {
                 httpOnly: true,
                 sameSite: "none",
                 secure: true,
                 maxAge: 24 * 60 * 60 * 1000,
             })
             .json({
-                accessToken,
-                roles,
-                userId: foundUser._id,
-                userName: foundUser.userName,
+                accessToken: newAccessToken,
+                avatarPath,
+                roles: roleValues,
+                userId: _id,
+                userName,
             });
     } catch (error) {
         Logging.error(error);

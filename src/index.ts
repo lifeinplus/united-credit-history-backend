@@ -1,7 +1,9 @@
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import express from "express";
+import fileUpload from "express-fileupload";
 import mongoose from "mongoose";
+import path from "path";
 
 import { config } from "./config";
 import ROLE_LIST from "./config/role_list";
@@ -41,10 +43,13 @@ const StartServer = () => {
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
     // app.use(express.json({ limit: 52428800 }));
+    app.use(fileUpload({ createParentPath: true }));
 
     app.get("/ping", (req, res, next) =>
         res.status(200).json({ message: "pong" })
     );
+
+    app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 
     app.use("/auth", Auth);
     app.use(jwtVerifier);
@@ -57,7 +62,6 @@ const StartServer = () => {
     app.use("/paymenthistories", PaymentHistory);
     app.use("/persons", Person);
     app.use("/requestCounts", RequestCount);
-    app.use(rolesVerifier(ROLE_LIST.admin));
     app.use("/users", User);
 
     app.use((req, res, next) => {
