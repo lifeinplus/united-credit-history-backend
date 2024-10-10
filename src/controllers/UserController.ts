@@ -97,6 +97,41 @@ export const getPaginated = async (req: Request, res: Response) => {
     }
 };
 
+export const changeAvatar = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    console.log("files", req.files);
+
+    if (!id) {
+        return res.status(400).json({
+            message: `User ID required`,
+        });
+    }
+
+    try {
+        const user = await UserModel.findOne({ _id: id })
+            .select("-password -refreshToken")
+            .exec();
+
+        if (!user) {
+            return res.sendStatus(204);
+        }
+
+        // const result = await user.save();
+
+        // return res.json(result);
+        return res.json(111);
+    } catch (error) {
+        Logging.error(error);
+
+        if (error instanceof Error) {
+            return res.status(500).json({ message: error.message });
+        }
+
+        return res.status(500).json({ error });
+    }
+};
+
 export const updateById = async (req: Request, res: Response) => {
     const { id, roles } = req.body;
 

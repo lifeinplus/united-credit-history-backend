@@ -1,6 +1,7 @@
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import express from "express";
+import fileUpload from "express-fileupload";
 import mongoose from "mongoose";
 
 import { config } from "./config";
@@ -40,6 +41,7 @@ const StartServer = () => {
     app.use(cookieParser());
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
+    app.use(fileUpload({ createParentPath: true }));
     // app.use(express.json({ limit: 52428800 }));
 
     app.get("/ping", (req, res, next) =>
