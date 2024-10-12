@@ -10,6 +10,9 @@ const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "";
 const REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || "1h";
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || "";
 
+const FILE_UPLOAD_SIZE_KB =
+    parseInt(process.env.FILE_UPLOAD_SIZE_KB || "") || 150;
+
 const MONGO_USERNAME = process.env.MONGO_USERNAME || "";
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || "";
 const MONGO_PORT = process.env.MONGO_PORT || "";
@@ -24,6 +27,9 @@ export const config = {
     cors: {
         credentials: CORS_CREDENTIALS,
         origin: CORS_ORIGIN,
+    },
+    fileUpload: {
+        sizeKb: FILE_UPLOAD_SIZE_KB,
     },
     mongo: {
         uri: MONGO_URI,
