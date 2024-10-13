@@ -6,7 +6,7 @@ import {
     deleteById,
     getAll,
     getPaginated,
-    updateById,
+    editById,
 } from "../controllers/UserController";
 import { fileUploadLimiter, pagination, rolesVerifier } from "../middleware";
 
@@ -27,7 +27,7 @@ router.put(
     changeAvatar
 );
 
-router.put("/updateById", rolesVerifier(ROLE_LIST.admin), updateById);
+router.put("/editById", rolesVerifier(ROLE_LIST.admin), editById);
 
 router.delete("/deleteById/:id", rolesVerifier(ROLE_LIST.admin), deleteById);
 

@@ -145,7 +145,7 @@ export const changeAvatar = async (req: Request, res: Response) => {
     }
 };
 
-export const updateById = async (req: Request, res: Response) => {
+export const editById = async (req: Request, res: Response) => {
     const { id, roles } = req.body;
 
     if (!id) {

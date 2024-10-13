@@ -7,7 +7,7 @@ import { config } from "../config";
 const KB = config.fileUpload.sizeKb;
 const FILE_SIZE_LIMIT = KB * 1024;
 
-const fileSizeLimiter = (allowedExtArray: string[]) => {
+const fileUploadLimiter = (allowedExtArray: string[]) => {
     return (req: Request, res: Response, next: NextFunction) => {
         if (!req.files || !Object.keys(req.files).length) {
             return res.status(400).json({ message: "Missing files" });
@@ -39,4 +39,4 @@ const fileSizeLimiter = (allowedExtArray: string[]) => {
     };
 };
 
-export default fileSizeLimiter;
+export default fileUploadLimiter;
