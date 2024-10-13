@@ -3,10 +3,11 @@ import express from "express";
 import ROLE_LIST from "../config/role_list";
 import {
     changeAvatar,
+    changePassword,
     deleteById,
+    editById,
     getAll,
     getPaginated,
-    editById,
 } from "../controllers/UserController";
 import { fileUploadLimiter, pagination, rolesVerifier } from "../middleware";
 
@@ -26,6 +27,8 @@ router.put(
     fileUploadLimiter([".png", ".jpg", ".jpeg"]),
     changeAvatar
 );
+
+router.put("/:id/changePassword", changePassword);
 
 router.put("/editById", rolesVerifier(ROLE_LIST.admin), editById);
 

@@ -5,7 +5,8 @@ import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
 const changePassword = async (req: Request, res: Response) => {
-    const { id, currentPassword, newPassword } = req.body;
+    const { id } = req.params;
+    const { currentPassword, newPassword } = req.body;
 
     if (!id) {
         return res.status(400).json({
