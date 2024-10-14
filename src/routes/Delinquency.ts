@@ -1,15 +1,16 @@
 import express from "express";
 
 import {
-    addDelinquency,
+    addDelinquencies,
     addDelinquenciesByList,
-    getByLoanIds,
+    getDelinquenciesByLoanIds,
 } from "../controllers/DelinquencyController";
 
 const router = express.Router();
 
-router.post("/addDelinquency", addDelinquency);
-router.post("/addDelinquenciesByList", addDelinquenciesByList);
-router.get("/getByLoanIds", getByLoanIds);
+router.get("/loan-ids", getDelinquenciesByLoanIds);
+
+router.post("/", addDelinquencies);
+router.post("/list", addDelinquenciesByList);
 
 export = router;

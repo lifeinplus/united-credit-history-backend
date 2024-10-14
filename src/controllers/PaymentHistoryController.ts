@@ -25,7 +25,10 @@ export const addPaymentHistory = async (req: Request, res: Response) => {
     }
 };
 
-export const addPaymentHistoryByList = async (req: Request, res: Response) => {
+export const addPaymentHistoriesByList = async (
+    req: Request,
+    res: Response
+) => {
     const paymentHistories = req.body;
 
     if (!paymentHistories.length) {
@@ -46,7 +49,10 @@ export const addPaymentHistoryByList = async (req: Request, res: Response) => {
     }
 };
 
-export const getByLoanIds = async (req: Request, res: Response) => {
+export const getPaymentHistoriesByLoanIds = async (
+    req: Request,
+    res: Response
+) => {
     const { loanIds } = req.query;
 
     try {

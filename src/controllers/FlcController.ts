@@ -4,7 +4,7 @@ import Logging from "../library/Logging";
 import { FlcModel } from "../models";
 import FlcService from "../services/FlcService";
 
-export const addFlc = async (req: Request, res: Response) => {
+export const addFlcs = async (req: Request, res: Response) => {
     const flc = req.body;
 
     if (!Object.keys(flc).length) {
@@ -25,7 +25,7 @@ export const addFlc = async (req: Request, res: Response) => {
     }
 };
 
-export const addFlcByList = async (req: Request, res: Response) => {
+export const addFlcsByList = async (req: Request, res: Response) => {
     const flcs = req.body;
 
     if (!flcs.length) {
@@ -46,7 +46,7 @@ export const addFlcByList = async (req: Request, res: Response) => {
     }
 };
 
-export const getByLoanIds = async (req: Request, res: Response) => {
+export const getFlcsByLoanIds = async (req: Request, res: Response) => {
     const { loanIds } = req.query;
 
     try {

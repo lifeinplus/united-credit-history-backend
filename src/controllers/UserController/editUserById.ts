@@ -3,8 +3,9 @@ import { Request, Response } from "express";
 import { UserModel } from "../../models";
 import Logging from "../../library/Logging";
 
-const deleteById = async (req: Request, res: Response) => {
+const editUserById = async (req: Request, res: Response) => {
     const { id } = req.params;
+    const { roles } = req.body;
 
     if (!id) {
         return res.status(400).json({
@@ -21,7 +22,11 @@ const deleteById = async (req: Request, res: Response) => {
             return res.sendStatus(204);
         }
 
-        const result = await user.deleteOne({ _id: id });
+        if (roles) {
+            user.roles = JSON.parse(roles);
+        }
+
+        const result = await user.save();
 
         return res.json(result);
     } catch (error) {
@@ -35,4 +40,4 @@ const deleteById = async (req: Request, res: Response) => {
     }
 };
 
-export default deleteById;
+export default editUserById;

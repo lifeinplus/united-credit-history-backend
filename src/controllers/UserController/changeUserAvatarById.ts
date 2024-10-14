@@ -5,7 +5,7 @@ import path from "path";
 import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
-const changeAvatar = async (req: Request, res: Response) => {
+const changeUserAvatarById = async (req: Request, res: Response) => {
     const { id } = req.params;
     const avatar = req.files?.avatar as UploadedFile;
 
@@ -52,4 +52,4 @@ const changeAvatar = async (req: Request, res: Response) => {
     }
 };
 
-export default changeAvatar;
+export default changeUserAvatarById;

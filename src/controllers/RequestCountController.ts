@@ -4,7 +4,7 @@ import Logging from "../library/Logging";
 import { RequestCountModel } from "../models";
 import RequestCountService from "../services/RequestCountService";
 
-export const addRequestCount = async (req: Request, res: Response) => {
+export const addRequestCounts = async (req: Request, res: Response) => {
     const requestCount = req.body;
 
     if (!Object.keys(requestCount).length) {
@@ -25,7 +25,7 @@ export const addRequestCount = async (req: Request, res: Response) => {
     }
 };
 
-export const addRequestCountByList = async (req: Request, res: Response) => {
+export const addRequestCountsByList = async (req: Request, res: Response) => {
     const requestCounts = req.body;
 
     if (!requestCounts.length) {
@@ -46,7 +46,10 @@ export const addRequestCountByList = async (req: Request, res: Response) => {
     }
 };
 
-export const getByReportId = async (req: Request, res: Response) => {
+export const getRequestCountsByReportId = async (
+    req: Request,
+    res: Response
+) => {
     const { reportId } = req.params;
 
     try {

@@ -54,14 +54,14 @@ const StartServer = () => {
     app.use("/auth", Auth);
     app.use(jwtVerifier);
     app.use(rolesVerifier(ROLE_LIST.user));
-    app.use("/reports", Report);
     app.use("/commons", Common);
     app.use("/delinquencies", Delinquency);
     app.use("/flcs", Flc);
     app.use("/loans", Loan);
-    app.use("/paymenthistories", PaymentHistory);
+    app.use("/payment-histories", PaymentHistory);
     app.use("/persons", Person);
-    app.use("/requestCounts", RequestCount);
+    app.use("/reports", Report);
+    app.use("/request-counts", RequestCount);
     app.use("/users", User);
 
     app.use((req, res, next) => {

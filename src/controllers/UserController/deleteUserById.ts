@@ -3,8 +3,8 @@ import { Request, Response } from "express";
 import { UserModel } from "../../models";
 import Logging from "../../library/Logging";
 
-const editById = async (req: Request, res: Response) => {
-    const { id, roles } = req.body;
+const deleteUserById = async (req: Request, res: Response) => {
+    const { id } = req.params;
 
     if (!id) {
         return res.status(400).json({
@@ -21,11 +21,7 @@ const editById = async (req: Request, res: Response) => {
             return res.sendStatus(204);
         }
 
-        if (roles) {
-            user.roles = JSON.parse(roles);
-        }
-
-        const result = await user.save();
+        const result = await user.deleteOne({ _id: id });
 
         return res.json(result);
     } catch (error) {
@@ -39,4 +35,4 @@ const editById = async (req: Request, res: Response) => {
     }
 };
 
-export default editById;
+export default deleteUserById;

@@ -1,15 +1,15 @@
-import changeAvatar from "./changeAvatar";
-import changePassword from "./changePassword";
-import deleteById from "./deleteById";
-import editById from "./editById";
-import getAll from "./getAll";
-import getPaginated from "./getPaginated";
+import changeUserAvatarById from "./changeUserAvatarById";
+import changeUserPasswordById from "./changeUserPasswordById";
+import deleteUserById from "./deleteUserById";
+import editUserById from "./editUserById";
+import getUsers from "./getUsers";
+import getUsersPaginated from "./getUsersPaginated";
 
 export {
-    changeAvatar,
-    changePassword,
-    deleteById,
-    editById,
-    getAll,
-    getPaginated,
+    changeUserAvatarById,
+    changeUserPasswordById,
+    deleteUserById,
+    editUserById,
+    getUsers,
+    getUsersPaginated,
 };

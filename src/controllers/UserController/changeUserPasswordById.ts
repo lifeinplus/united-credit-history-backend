@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
-const changePassword = async (req: Request, res: Response) => {
+const changeUserPasswordById = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { currentPassword, newPassword } = req.body;
 
@@ -60,4 +60,4 @@ const changePassword = async (req: Request, res: Response) => {
     }
 };
 
-export default changePassword;
+export default changeUserPasswordById;

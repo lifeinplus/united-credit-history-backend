@@ -1,15 +1,16 @@
 import express from "express";
 
 import {
-    addRequestCount,
-    addRequestCountByList,
-    getByReportId,
+    addRequestCounts,
+    addRequestCountsByList,
+    getRequestCountsByReportId,
 } from "../controllers/RequestCountController";
 
 const router = express.Router();
 
-router.post("/addRequestCount", addRequestCount);
-router.post("/addRequestCountByList", addRequestCountByList);
-router.get("/getByReportId/:reportId", getByReportId);
+router.get("/:reportId", getRequestCountsByReportId);
+
+router.post("/", addRequestCounts);
+router.post("/list", addRequestCountsByList);
 
 export = router;
