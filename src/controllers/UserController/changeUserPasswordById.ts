@@ -27,7 +27,7 @@ const changeUserPasswordById = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await UserModel.findOne({ _id: id })
+        const user = await UserModel.findById(id)
             .select("-refreshToken")
             .exec();
 
@@ -46,9 +46,11 @@ const changeUserPasswordById = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
         user.password = hashedPassword;
-        const result = await user.save();
+        await user.save();
 
-        return res.status(200).json({ id: result._id });
+        return res
+            .status(200)
+            .json({ message: "Password successfully changed" });
     } catch (error) {
         Logging.error(error);
 

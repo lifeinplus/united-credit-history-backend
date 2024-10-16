@@ -7,17 +7,13 @@ const getUsers = async (req: Request, res: Response) => {
     try {
         const users = await UserModel.find()
             .select("-password -refreshToken")
-            .sort("creationDate");
+            .sort("creationDate")
+            .lean();
 
-        const result = users.map((user) => {
-            const { _id, creationDate, userName, roles } = user;
-            return {
-                _id,
-                creationDate,
-                userName,
-                roles: JSON.stringify(roles),
-            };
-        });
+        const result = users.map((user) => ({
+            ...user,
+            roles: JSON.stringify(user.roles),
+        }));
 
         return result.length
             ? res.status(200).json(result)

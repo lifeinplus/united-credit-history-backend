@@ -29,7 +29,7 @@ const changeUserAvatarById = async (req: Request, res: Response) => {
 
         await avatar.mv(uploadPath);
 
-        const user = await UserModel.findOne({ _id: id })
+        const user = await UserModel.findById(id)
             .select("-password -refreshToken")
             .exec();
 
