@@ -31,18 +31,13 @@ const getUsersPaginated = async (req: Request, res: Response) => {
             .limit(limit)
             .select("-password -refreshToken")
             .sort({ [sort]: order })
+            .lean()
             .exec();
 
-        const results = users.map((user) => {
-            const { _id, creationDate, userName, roles } = user;
-
-            return {
-                _id,
-                creationDate,
-                userName,
-                roles: JSON.stringify(roles),
-            };
-        });
+        const results = users.map((user) => ({
+            ...user,
+            roles: JSON.stringify(user.roles),
+        }));
 
         const result = {
             results,

@@ -13,17 +13,8 @@ const deleteUserById = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await UserModel.findOne({ _id: id })
-            .select("-password -refreshToken")
-            .exec();
-
-        if (!user) {
-            return res.sendStatus(204);
-        }
-
-        const result = await user.deleteOne({ _id: id });
-
-        return res.json(result);
+        await UserModel.findByIdAndDelete(id);
+        return res.status(200).json({ message: "User successfully deleted" });
     } catch (error) {
         Logging.error(error);
 

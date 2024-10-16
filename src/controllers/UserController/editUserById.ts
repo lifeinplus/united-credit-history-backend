@@ -14,7 +14,7 @@ const editUserById = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await UserModel.findOne({ _id: id })
+        const user = await UserModel.findById(id)
             .select("-password -refreshToken")
             .exec();
 
@@ -26,9 +26,11 @@ const editUserById = async (req: Request, res: Response) => {
             user.roles = JSON.parse(roles);
         }
 
-        const result = await user.save();
+        await user.save();
 
-        return res.json(result);
+        return res
+            .status(200)
+            .json({ message: "User data successfully changed" });
     } catch (error) {
         Logging.error(error);
 
