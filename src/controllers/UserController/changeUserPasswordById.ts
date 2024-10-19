@@ -29,7 +29,7 @@ const changeUserPasswordById = async (req: Request, res: Response) => {
 
     try {
         const user = await UserModel.findById(id)
-            .select("-refreshToken")
+            .select("-refreshTokens")
             .exec();
 
         if (!user) {

@@ -7,7 +7,7 @@ interface User {
     lastName: string;
     username: string;
     password: string;
-    refreshToken: string[];
+    refreshTokens: string[];
     roles: Record<string, number>;
 }
 
@@ -21,7 +21,7 @@ const UserSchema: Schema = new Schema(
         lastName: { type: String },
         username: { type: String, required: true, unique: true },
         password: { type: String, required: true },
-        refreshToken: { type: [String] },
+        refreshTokens: { type: [String] },
         roles: { type: Schema.Types.Mixed },
     },
     { versionKey: false }

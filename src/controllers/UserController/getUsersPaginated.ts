@@ -29,7 +29,7 @@ const getUsersPaginated = async (req: Request, res: Response) => {
         })
             .skip(skip)
             .limit(limit)
-            .select("-password -refreshToken")
+            .select("-password -refreshTokens")
             .sort({ [sort]: order })
             .lean()
             .exec();

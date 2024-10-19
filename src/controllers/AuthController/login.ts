@@ -43,7 +43,7 @@ const login = async (req: Request, res: Response) => {
             { expiresIn: config.token.refresh.expiresIn }
         );
 
-        let refreshTokenArray = foundUser.refreshToken.filter(
+        let refreshTokenArray = foundUser.refreshTokens.filter(
             (token) => token !== cookies.jwt
         );
 
@@ -53,7 +53,7 @@ const login = async (req: Request, res: Response) => {
             // 2. RT is stolen
             // 3. Clear all RTs when user logins
             const foundToken = await UserModel.findOne({
-                refreshToken: cookies.jwt,
+                refreshTokens: cookies.jwt,
             }).exec();
 
             if (!foundToken) {
@@ -64,7 +64,7 @@ const login = async (req: Request, res: Response) => {
             res.clearCookie("jwt");
         }
 
-        foundUser.refreshToken = [...refreshTokenArray, refreshToken];
+        foundUser.refreshTokens = [...refreshTokenArray, refreshToken];
         await foundUser.save();
 
         return res

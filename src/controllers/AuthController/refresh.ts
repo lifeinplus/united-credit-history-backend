@@ -20,7 +20,7 @@ const refresh = async (req: Request, res: Response) => {
 
     try {
         foundUser = await UserModel.findOne({
-            refreshToken: cookies.jwt,
+            refreshTokens: cookies.jwt,
         }).exec();
 
         if (!foundUser) {
@@ -36,16 +36,16 @@ const refresh = async (req: Request, res: Response) => {
             }).exec();
 
             if (hackedUser) {
-                hackedUser.refreshToken = [];
+                hackedUser.refreshTokens = [];
                 await hackedUser.save();
             }
 
             return res.sendStatus(403);
         }
 
-        const { _id, avatarPath, refreshToken, roles, username } = foundUser;
+        const { _id, avatarPath, refreshTokens, roles, username } = foundUser;
 
-        refreshTokenArray = refreshToken.filter(
+        refreshTokenArray = refreshTokens.filter(
             (token) => token !== cookies.jwt
         );
 
@@ -72,7 +72,7 @@ const refresh = async (req: Request, res: Response) => {
             { expiresIn: config.token.refresh.expiresIn }
         );
 
-        foundUser.refreshToken = [...refreshTokenArray, newRefreshToken];
+        foundUser.refreshTokens = [...refreshTokenArray, newRefreshToken];
         await foundUser.save();
 
         return res
@@ -95,7 +95,7 @@ const refresh = async (req: Request, res: Response) => {
 
         if (error instanceof TokenExpiredError) {
             if (foundUser) {
-                foundUser.refreshToken = [...refreshTokenArray];
+                foundUser.refreshTokens = [...refreshTokenArray];
                 await foundUser.save();
             }
 

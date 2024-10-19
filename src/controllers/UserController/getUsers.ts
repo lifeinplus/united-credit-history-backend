@@ -6,7 +6,7 @@ import { UserModel } from "../../models";
 const getUsers = async (req: Request, res: Response) => {
     try {
         const users = await UserModel.find()
-            .select("-password -refreshToken")
+            .select("-password -refreshTokens")
             .sort("creationDate")
             .lean();
 

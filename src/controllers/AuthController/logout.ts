@@ -14,11 +14,11 @@ const logout = async (req: Request, res: Response) => {
 
     try {
         const foundUser = await UserModel.findOne({
-            refreshToken: cookies.jwt,
+            refreshTokens: cookies.jwt,
         }).exec();
 
         if (foundUser) {
-            foundUser.refreshToken = foundUser.refreshToken.filter(
+            foundUser.refreshTokens = foundUser.refreshTokens.filter(
                 (token) => token !== cookies.jwt
             );
 
