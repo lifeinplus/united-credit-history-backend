@@ -32,7 +32,7 @@ const refresh = async (req: Request, res: Response) => {
             Logging.warn("Attempted refresh token reuse at /auth/refresh");
 
             const hackedUser = await UserModel.findOne({
-                userName: decoded.userName,
+                username: decoded.username,
             }).exec();
 
             if (hackedUser) {
@@ -43,7 +43,7 @@ const refresh = async (req: Request, res: Response) => {
             return res.sendStatus(403);
         }
 
-        const { _id, avatarPath, refreshToken, roles, userName } = foundUser;
+        const { _id, avatarPath, refreshToken, roles, username } = foundUser;
 
         refreshTokenArray = refreshToken.filter(
             (token) => token !== cookies.jwt
@@ -54,20 +54,20 @@ const refresh = async (req: Request, res: Response) => {
             config.token.refresh.secret
         ) as UserJwtPayload;
 
-        if (decoded.userName !== userName) {
+        if (decoded.username !== username) {
             return res.status(403).json({ message: "User name incorrect" });
         }
 
         const roleValues = Object.values(roles || {});
 
         const newAccessToken = jwt.sign(
-            { userName: decoded.userName, roles: roleValues },
+            { username: decoded.username, roles: roleValues },
             config.token.access.secret,
             { expiresIn: config.token.access.expiresIn }
         );
 
         const newRefreshToken = jwt.sign(
-            { userName },
+            { username },
             config.token.refresh.secret,
             { expiresIn: config.token.refresh.expiresIn }
         );
@@ -88,7 +88,7 @@ const refresh = async (req: Request, res: Response) => {
                 avatarPath,
                 roles: roleValues,
                 userId: _id,
-                userName,
+                username,
             });
     } catch (error) {
         Logging.error(error);

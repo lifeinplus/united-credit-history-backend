@@ -6,10 +6,10 @@ import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
 const register = async (req: Request, res: Response) => {
-    const { firstName, lastName, userName, password, confirmPassword } =
+    const { firstName, lastName, username, password, confirmPassword } =
         req.body;
 
-    if (!firstName || !lastName || !userName) {
+    if (!firstName || !lastName || !username) {
         return res.status(400).json({
             message: `All user data is required`,
         });
@@ -33,7 +33,7 @@ const register = async (req: Request, res: Response) => {
     }
 
     try {
-        const foundUser = await UserModel.findOne({ userName }).exec();
+        const foundUser = await UserModel.findOne({ username }).exec();
 
         if (foundUser) {
             return res.status(409).json({
@@ -47,7 +47,7 @@ const register = async (req: Request, res: Response) => {
             creationDate: new Date(),
             firstName,
             lastName,
-            userName,
+            username,
             password: hashedPassword,
             roles: { user: ROLE_LIST.user },
         });

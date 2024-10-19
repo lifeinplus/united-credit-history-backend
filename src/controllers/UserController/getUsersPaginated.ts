@@ -18,14 +18,14 @@ const getUsersPaginated = async (req: Request, res: Response) => {
 
     try {
         const total = await UserModel.countDocuments({
-            userName: new RegExp(search, "i"),
+            username: new RegExp(search, "i"),
         });
 
         const totalPages = Math.ceil(total / limit);
         const toEntry = to > total ? total : to;
 
         const users = await UserModel.find({
-            userName: new RegExp(search, "i"),
+            username: new RegExp(search, "i"),
         })
             .skip(skip)
             .limit(limit)

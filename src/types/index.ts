@@ -18,6 +18,6 @@ export interface UserRequest extends Request {
 }
 
 export interface UserJwtPayload extends JwtPayload {
-    userName: string;
+    username: string;
     roles: number[];
 }
