@@ -4,7 +4,7 @@ import Logging from "../library/Logging";
 import { DelinquencyModel } from "../models";
 import DelinquencyService from "../services/DelinquencyService";
 
-export const addDelinquency = async (req: Request, res: Response) => {
+export const addDelinquencies = async (req: Request, res: Response) => {
     const delinquency = req.body;
 
     if (!Object.keys(delinquency).length) {
@@ -46,7 +46,10 @@ export const addDelinquenciesByList = async (req: Request, res: Response) => {
     }
 };
 
-export const getByLoanIds = async (req: Request, res: Response) => {
+export const getDelinquenciesByLoanIds = async (
+    req: Request,
+    res: Response
+) => {
     const { loanIds } = req.query;
 
     try {

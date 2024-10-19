@@ -3,13 +3,14 @@ import express from "express";
 import {
     addLoan,
     addLoansByList,
-    getByReportId,
+    getLoansByReportId,
 } from "../controllers/LoanController";
 
 const router = express.Router();
 
-router.post("/addLoan", addLoan);
-router.post("/addLoansByList", addLoansByList);
-router.get("/getByReportId/:reportId", getByReportId);
+router.get("/:reportId", getLoansByReportId);
+
+router.post("/", addLoan);
+router.post("/list", addLoansByList);
 
 export = router;

@@ -46,7 +46,7 @@ export const addPersonsByList = async (req: Request, res: Response) => {
     }
 };
 
-export const getByReportId = async (req: Request, res: Response) => {
+export const getPersonsByReportId = async (req: Request, res: Response) => {
     const { reportId } = req.params;
 
     try {

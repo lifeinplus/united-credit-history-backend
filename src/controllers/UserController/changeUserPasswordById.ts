@@ -4,8 +4,9 @@ import { Request, Response } from "express";
 import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
-const changePassword = async (req: Request, res: Response) => {
-    const { id, currentPassword, newPassword } = req.body;
+const changeUserPasswordById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { currentPassword, newPassword } = req.body;
 
     if (!id) {
         return res.status(400).json({
@@ -26,7 +27,7 @@ const changePassword = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await UserModel.findOne({ _id: id })
+        const user = await UserModel.findById(id)
             .select("-refreshToken")
             .exec();
 
@@ -45,9 +46,11 @@ const changePassword = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
         user.password = hashedPassword;
-        const result = await user.save();
+        await user.save();
 
-        return res.status(200).json({ id: result._id });
+        return res
+            .status(200)
+            .json({ message: "Password successfully changed" });
     } catch (error) {
         Logging.error(error);
 
@@ -59,4 +62,4 @@ const changePassword = async (req: Request, res: Response) => {
     }
 };
 
-export default changePassword;
+export default changeUserPasswordById;

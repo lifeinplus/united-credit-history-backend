@@ -6,17 +6,29 @@ import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
 const register = async (req: Request, res: Response) => {
-    const { userName, password } = req.body;
+    const { firstName, lastName, userName, password, confirmPassword } =
+        req.body;
 
-    if (!userName) {
+    if (!firstName || !lastName || !userName) {
         return res.status(400).json({
-            message: `Username is required`,
+            message: `All user data is required`,
         });
     }
 
-    if (!password || password.length < 4) {
+    if (
+        !password ||
+        password.length < 8 ||
+        !confirmPassword ||
+        confirmPassword.length < 8
+    ) {
         return res.status(400).json({
-            message: `Password is required and should be at least 4 characters long`,
+            message: `Passwords are required and should be at least 8 characters long`,
+        });
+    }
+
+    if (password !== confirmPassword) {
+        return res.status(400).json({
+            message: `Passwords do not match`,
         });
     }
 
@@ -25,21 +37,23 @@ const register = async (req: Request, res: Response) => {
 
         if (foundUser) {
             return res.status(409).json({
-                message: `Username [${userName}] is taken already`,
+                message: `Username already exists`,
             });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await UserModel.create({
+        await UserModel.create({
             creationDate: new Date(),
+            firstName,
+            lastName,
             userName,
             password: hashedPassword,
             roles: { user: ROLE_LIST.user },
         });
 
         return res.status(201).json({
-            message: `User [${newUser.userName}] created successfully`,
+            message: `User created successfully`,
         });
     } catch (error) {
         Logging.error(error);

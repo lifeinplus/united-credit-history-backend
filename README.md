@@ -58,19 +58,35 @@ The backend provides several API routes:
     -   `GET /refresh`: Generates a new access token and refresh token when a valid refresh token is presented.
     -   `POST /login`: User login using a username and password. If valid, the server responds with an access token and a refresh token in a secure cookie.
     -   `POST /register`: Registers a new user with a hashed password and assigns a default user role.
-    -   `PUT /changePassword`: Allows a user to change their password by providing their current password, new password, and user ID.
 
 -   **Common** (`/commons`): Manage common data entries related to credit history.
 -   **Delinquency** (`/delinquencies`): Handle delinquency records for loans.
 -   **FLC** (`/flcs`): Full Loan Cost (FLC) data management.
 -   **Loan** (`/loans`): Manage loan records.
--   **Payment History** (`/paymenthistories`): Store and retrieve payment histories by loan ID.
+-   **Payment History** (`/payment-histories`): Store and retrieve payment histories by loan ID.
 -   **Person** (`/persons`): Manage person records by report ID.
--   **Report** (`/reports`): Create and retrieve full reports, including paginated report data, with related details (commons, loans, request counts, and persons).
--   **Request Count** (`/requestCounts`): Track requests related to credit history.
--   **User** (`/users`): Retrieve and manage paginated user data (with middleware for pagination).
 
-https://github.com/lifeinplus/united-credit-history-backend/blob/b99fb08cf4f86c8fa284e46c467a5b4666613ce8/src/routes/User.ts#L11-L16
+-   **Report** (`/reports`):
+
+    -   `GET /`: Retrieves all reports sorted by application number.
+    -   `GET /paginated`: Retrieves paginated reports filtered by client name and returns the reports and pagination details.
+    -   `GET /:id`: Retrieves a report by its ID.
+    -   `GET /:id/full`: Retrieves a full report by its ID, including related common data, loans, request counts, and persons.
+    -   `POST /`: Adds a new report, returning the created report.
+    -   `POST /list`: Adds multiple reports from a list, returning the created reports.
+
+-   **Request Count** (`/request-counts`): Track requests related to credit history.
+
+-   **User** (`/users`):
+
+    -   `GET /`: Retrieves all users sorted by creation date, returning user data or a 404 status if no users are found.
+    -   `GET /paginated`: Retrieves paginated users, filtering by username, and returns user data along with pagination details.
+    -   `PUT /:id/avatar`: Changes a user’s avatar by ID, saving the uploaded file and updating the user’s avatar path.
+    -   `PUT /:id/password`: Allows a user to change their password by providing their current password and new password.
+    -   `PUT /:id`: Edits a user’s roles by ID, returning the updated user or a 204 status if the user doesn’t exist.
+    -   `DELETE /:id`: Deletes a user by ID, returning the result or a 204 status if the user doesn’t exist.
+
+https://github.com/lifeinplus/united-credit-history-backend/blob/3e8dd50fc391166bb894746668b1075500a832f8/src/routes/User.ts#L14-L23
 
 ## Models
 
@@ -92,10 +108,11 @@ https://github.com/lifeinplus/united-credit-history-backend/blob/47a3b5bcf87ce36
 
 The project uses the following middleware:
 
+-   **File Upload Limiter**: Limits file uploads by checking size and allowed file extensions, returning an error if files are missing, too large, or have disallowed extensions.
 -   **JWT Verifier**: Validates JWT tokens for secure endpoints. The `jwtVerifier` middleware checks if the token is present, verifies it, and extracts the user roles. If the token is expired or invalid, it responds with appropriate status codes.
+-   **Pagination**: Extracts pagination options (limit, page, and search query) from the request and makes them available in the response for routes that return paginated results.
 -   **Request Logger**: Logs incoming requests and their corresponding status codes after completion. The `requestLogger` middleware records method, URL, and IP address for both the incoming request and the response.
 -   **Roles Verifier**: Ensures that only users with specific roles can access certain endpoints. It checks if the user's roles match any of the allowed roles for the route.
--   **Pagination**: Extracts pagination options (limit, page, and search query) from the request and makes them available in the response for routes that return paginated results.
 -   **CORS**: Configured based on environment variables to allow cross-origin requests.
 -   **Cookie Parser**: Handles cookies in requests.
 
@@ -113,4 +130,4 @@ Here are the available scripts for development and production:
 
 ---
 
-v1.11.0 © 2024 Artem Denisov
+v1.12.0 © 2024 Artem Denisov

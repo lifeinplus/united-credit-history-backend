@@ -3,13 +3,14 @@ import express from "express";
 import {
     addPerson,
     addPersonsByList,
-    getByReportId,
+    getPersonsByReportId,
 } from "../controllers/PersonController";
 
 const router = express.Router();
 
-router.post("/addPerson", addPerson);
-router.post("/addPersonsByList", addPersonsByList);
-router.get("/getByReportId/:reportId", getByReportId);
+router.get("/:reportId", getPersonsByReportId);
+
+router.post("/", addPerson);
+router.post("/list", addPersonsByList);
 
 export = router;

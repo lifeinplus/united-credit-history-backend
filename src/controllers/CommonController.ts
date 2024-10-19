@@ -4,7 +4,7 @@ import Logging from "../library/Logging";
 import { CommonModel } from "../models";
 import CommonService from "../services/CommonService";
 
-export const addCommon = async (req: Request, res: Response) => {
+export const addCommons = async (req: Request, res: Response) => {
     const common = req.body;
 
     if (!Object.keys(common).length) {
@@ -25,7 +25,7 @@ export const addCommon = async (req: Request, res: Response) => {
     }
 };
 
-export const addCommonByList = async (req: Request, res: Response) => {
+export const addCommonsByList = async (req: Request, res: Response) => {
     const commons = req.body;
 
     if (!commons.length) {
@@ -46,7 +46,7 @@ export const addCommonByList = async (req: Request, res: Response) => {
     }
 };
 
-export const getByReportId = async (req: Request, res: Response) => {
+export const getCommonsByReportId = async (req: Request, res: Response) => {
     const { reportId } = req.params;
 
     try {

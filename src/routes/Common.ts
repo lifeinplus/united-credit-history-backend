@@ -1,15 +1,16 @@
 import express from "express";
 
 import {
-    addCommon,
-    addCommonByList,
-    getByReportId,
+    addCommons,
+    addCommonsByList,
+    getCommonsByReportId,
 } from "../controllers/CommonController";
 
 const router = express.Router();
 
-router.post("/addCommon", addCommon);
-router.post("/addCommonByList", addCommonByList);
-router.get("/getByReportId/:reportId", getByReportId);
+router.get("/:reportId", getCommonsByReportId);
+
+router.post("/", addCommons);
+router.post("/list", addCommonsByList);
 
 export = router;

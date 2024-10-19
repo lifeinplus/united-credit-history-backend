@@ -46,7 +46,7 @@ export const addLoansByList = async (req: Request, res: Response) => {
     }
 };
 
-export const getByReportId = async (req: Request, res: Response) => {
+export const getLoansByReportId = async (req: Request, res: Response) => {
     const { reportId } = req.params;
 
     try {

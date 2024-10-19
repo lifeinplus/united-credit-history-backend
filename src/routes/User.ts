@@ -2,33 +2,33 @@ import express from "express";
 
 import ROLE_LIST from "../config/role_list";
 import {
-    changeAvatar,
-    deleteById,
-    getAll,
-    getPaginated,
-    updateById,
+    changeUserAvatarById,
+    changeUserPasswordById,
+    deleteUserById,
+    editUserById,
+    getUsersPaginated,
+    getUsers,
 } from "../controllers/UserController";
 import { fileUploadLimiter, pagination, rolesVerifier } from "../middleware";
 
 const router = express.Router();
 
-router.get("/getAll", rolesVerifier(ROLE_LIST.admin), getAll);
-
+router.get("/", rolesVerifier(ROLE_LIST.admin), getUsers);
 router.get(
-    "/getPaginated",
+    "/paginated",
     rolesVerifier(ROLE_LIST.admin),
     pagination,
-    getPaginated
+    getUsersPaginated
 );
 
+router.put("/:id", rolesVerifier(ROLE_LIST.admin), editUserById);
 router.put(
-    "/:id/changeAvatar",
+    "/:id/avatar",
     fileUploadLimiter([".png", ".jpg", ".jpeg"]),
-    changeAvatar
+    changeUserAvatarById
 );
+router.put("/:id/password", changeUserPasswordById);
 
-router.put("/updateById", rolesVerifier(ROLE_LIST.admin), updateById);
-
-router.delete("/deleteById/:id", rolesVerifier(ROLE_LIST.admin), deleteById);
+router.delete("/:id", rolesVerifier(ROLE_LIST.admin), deleteUserById);
 
 export = router;
