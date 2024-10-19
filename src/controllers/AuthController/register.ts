@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 
+import { config } from "../../config";
 import ROLE_LIST from "../../config/role_list";
 import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
@@ -17,9 +18,9 @@ const register = async (req: Request, res: Response) => {
 
     if (
         !password ||
-        password.length < 8 ||
+        password.length < config.auth.passwordLengthMin ||
         !confirmPassword ||
-        confirmPassword.length < 8
+        confirmPassword.length < config.auth.passwordLengthMin
     ) {
         return res.status(400).json({
             message: `Passwords are required and should be at least 8 characters long`,

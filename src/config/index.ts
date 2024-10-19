@@ -13,6 +13,9 @@ const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || "";
 const FILE_UPLOAD_SIZE_KB =
     parseInt(process.env.FILE_UPLOAD_SIZE_KB || "") || 150;
 
+const PASSWORD_LENGTH_MIN =
+    parseInt(process.env.PASSWORD_LENGTH_MIN || "") || 8;
+
 const MONGO_USERNAME = process.env.MONGO_USERNAME || "";
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || "";
 const MONGO_PORT = process.env.MONGO_PORT || "";
@@ -24,6 +27,9 @@ const SERVER_PORT = process.env.SERVER_PORT
     : 1337;
 
 export const config = {
+    auth: {
+        passwordLengthMin: PASSWORD_LENGTH_MIN,
+    },
     cors: {
         credentials: CORS_CREDENTIALS,
         origin: CORS_ORIGIN,
