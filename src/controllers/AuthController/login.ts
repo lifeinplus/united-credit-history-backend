@@ -7,43 +7,56 @@ import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
 const login = async (req: Request, res: Response) => {
-    const { username, password } = req.body;
+    const { username: reqUsername, password: reqPassword } = req.body;
     const cookies = req.cookies;
 
-    if (!username || !password) {
+    if (!reqUsername || !reqPassword) {
         return res
             .status(400)
             .json({ message: `Username and password required` });
     }
 
     try {
-        const foundUser = await UserModel.findOne({ username }).exec();
+        const foundUser = await UserModel.findOne({
+            username: reqUsername,
+        }).exec();
 
         if (!foundUser) {
             return res.status(401).json({ message: `User not found` });
         }
 
-        const match = await bcrypt.compare(password, foundUser.password);
+        const {
+            _id: userId,
+            avatarPath,
+            firstName,
+            lastName,
+            password,
+            refreshTokens,
+            roles,
+            username,
+        } = foundUser;
+
+        const match = await bcrypt.compare(reqPassword, password);
 
         if (!match) {
             return res.status(401).json({ message: "Password is incorrect" });
         }
 
-        const roles = Object.values(foundUser.roles || {});
+        const roleValues = Object.values(roles || {});
 
-        const accessToken = jwt.sign(
-            { username: foundUser.username, roles },
+        const newAccessToken = jwt.sign(
+            { username, roles: roleValues },
             config.token.access.secret,
             { expiresIn: config.token.access.expiresIn }
         );
 
-        const refreshToken = jwt.sign(
-            { username: foundUser.username },
+        const newRefreshToken = jwt.sign(
+            { username },
             config.token.refresh.secret,
             { expiresIn: config.token.refresh.expiresIn }
         );
 
-        let refreshTokenArray = foundUser.refreshTokens.filter(
+        let refreshTokenArray = refreshTokens.filter(
             (token) => token !== cookies.jwt
         );
 
@@ -64,22 +77,25 @@ const login = async (req: Request, res: Response) => {
             res.clearCookie("jwt");
         }
 
-        foundUser.refreshTokens = [...refreshTokenArray, refreshToken];
+        foundUser.refreshTokens = [...refreshTokenArray, newRefreshToken];
         await foundUser.save();
 
         return res
             .status(200)
-            .cookie("jwt", refreshToken, {
+            .cookie("jwt", newRefreshToken, {
                 httpOnly: true,
                 sameSite: "none",
                 secure: true,
                 maxAge: 24 * 60 * 60 * 1000,
             })
             .json({
-                accessToken,
-                avatarPath: foundUser.avatarPath,
-                roles,
-                userId: foundUser._id,
+                accessToken: newAccessToken,
+                avatarPath,
+                firstName,
+                lastName,
+                roles: roleValues,
+                userId,
+                username,
             });
     } catch (error) {
         Logging.error(error);

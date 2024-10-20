@@ -43,25 +43,29 @@ const refresh = async (req: Request, res: Response) => {
             return res.sendStatus(403);
         }
 
-        const { _id, avatarPath, refreshTokens, roles, username } = foundUser;
-
-        refreshTokenArray = refreshTokens.filter(
-            (token) => token !== cookies.jwt
-        );
+        const {
+            _id: userId,
+            avatarPath,
+            firstName,
+            lastName,
+            refreshTokens,
+            roles,
+            username,
+        } = foundUser;
 
         const decoded = jwt.verify(
             cookies.jwt,
             config.token.refresh.secret
         ) as UserJwtPayload;
 
-        if (decoded.username !== username) {
-            return res.status(403).json({ message: "User name incorrect" });
+        if (username !== decoded.username) {
+            return res.status(403).json({ message: "Username incorrect" });
         }
 
         const roleValues = Object.values(roles || {});
 
         const newAccessToken = jwt.sign(
-            { username: decoded.username, roles: roleValues },
+            { username, roles: roleValues },
             config.token.access.secret,
             { expiresIn: config.token.access.expiresIn }
         );
@@ -70,6 +74,10 @@ const refresh = async (req: Request, res: Response) => {
             { username },
             config.token.refresh.secret,
             { expiresIn: config.token.refresh.expiresIn }
+        );
+
+        refreshTokenArray = refreshTokens.filter(
+            (token) => token !== cookies.jwt
         );
 
         foundUser.refreshTokens = [...refreshTokenArray, newRefreshToken];
@@ -86,8 +94,10 @@ const refresh = async (req: Request, res: Response) => {
             .json({
                 accessToken: newAccessToken,
                 avatarPath,
+                firstName,
+                lastName,
                 roles: roleValues,
-                userId: _id,
+                userId,
                 username,
             });
     } catch (error) {
