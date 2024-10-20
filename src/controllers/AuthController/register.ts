@@ -1,15 +1,16 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 
+import { config } from "../../config";
 import ROLE_LIST from "../../config/role_list";
 import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
 const register = async (req: Request, res: Response) => {
-    const { firstName, lastName, userName, password, confirmPassword } =
+    const { firstName, lastName, username, password, confirmPassword } =
         req.body;
 
-    if (!firstName || !lastName || !userName) {
+    if (!firstName || !lastName || !username) {
         return res.status(400).json({
             message: `All user data is required`,
         });
@@ -17,9 +18,9 @@ const register = async (req: Request, res: Response) => {
 
     if (
         !password ||
-        password.length < 8 ||
+        password.length < config.auth.passwordLengthMin ||
         !confirmPassword ||
-        confirmPassword.length < 8
+        confirmPassword.length < config.auth.passwordLengthMin
     ) {
         return res.status(400).json({
             message: `Passwords are required and should be at least 8 characters long`,
@@ -33,7 +34,7 @@ const register = async (req: Request, res: Response) => {
     }
 
     try {
-        const foundUser = await UserModel.findOne({ userName }).exec();
+        const foundUser = await UserModel.findOne({ username }).exec();
 
         if (foundUser) {
             return res.status(409).json({
@@ -47,7 +48,7 @@ const register = async (req: Request, res: Response) => {
             creationDate: new Date(),
             firstName,
             lastName,
-            userName,
+            username,
             password: hashedPassword,
             roles: { user: ROLE_LIST.user },
         });

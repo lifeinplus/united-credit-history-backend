@@ -26,15 +26,18 @@ https://github.com/lifeinplus/united-credit-history-backend/blob/1658fdb2d1cc61c
 
 The project relies on several environment variables to configure its behavior:
 
+-   **Auth**:
+
+    -   `PASSWORD_LENGTH_MIN`: Sets a minimum password length for authentication, using an environment variable or defaulting to 8 if not provided.
+
 -   **CORS**:
+
     -   `CORS_CREDENTIALS`: Specifies whether credentials are included in CORS requests.
     -   `CORS_ORIGIN`: Defines the allowed origins for CORS.
--   **Tokens**:
 
-    -   `ACCESS_TOKEN_EXPIRES_IN`: Expiration time for access tokens (default: 5 minutes).
-    -   `ACCESS_TOKEN_SECRET`: Secret key for signing access tokens.
-    -   `REFRESH_TOKEN_EXPIRES_IN`: Expiration time for refresh tokens (default: 1 hour).
-    -   `REFRESH_TOKEN_SECRET`: Secret key for signing refresh tokens.
+-   **File Upload**:
+
+    -   `FILE_UPLOAD_SIZE_KB`: Configures the maximum file upload size, using an environment variable or defaulting to 150 KB if not provided.
 
 -   **MongoDB**:
 
@@ -43,6 +46,13 @@ The project relies on several environment variables to configure its behavior:
 -   **Server**:
 
     -   `SERVER_PORT`: Defines the port the server will run on (default: 1337).
+
+-   **Tokens**:
+
+    -   `ACCESS_TOKEN_EXPIRES_IN`: Expiration time for access tokens (default: 5 minutes).
+    -   `ACCESS_TOKEN_SECRET`: Secret key for signing access tokens.
+    -   `REFRESH_TOKEN_EXPIRES_IN`: Expiration time for refresh tokens (default: 1 hour).
+    -   `REFRESH_TOKEN_SECRET`: Secret key for signing refresh tokens.
 
 -   **User Roles**:
     -   `Admin`: 1010
@@ -86,7 +96,7 @@ The backend provides several API routes:
     -   `PUT /:id`: Edits a user’s roles by ID, returning the updated user or a 204 status if the user doesn’t exist.
     -   `DELETE /:id`: Deletes a user by ID, returning the result or a 204 status if the user doesn’t exist.
 
-https://github.com/lifeinplus/united-credit-history-backend/blob/3e8dd50fc391166bb894746668b1075500a832f8/src/routes/User.ts#L14-L23
+https://github.com/lifeinplus/united-credit-history-backend/blob/59c74a811cd121af6921044af2a65cdf7b551038/src/routes/User.ts#L14-L22
 
 ## Models
 
@@ -100,9 +110,9 @@ The following data models are used:
 -   **Person**: Represents a person's data, including name, birth date, and document details (series, number, and issue date).
 -   **Report**: Contains details of a report, including application number, client name, and report creation date.
 -   **Request Count**: Tracks the number of requests related to credit history over various periods (e.g., last 30 days, last 24 months) including microcredit requests.
--   **User**: Represents user information, including username, password, creation date, and roles.
+-   **User**: Represents user information, including avatarPath, creation date, user names, password, refresh tokens, and roles.
 
-https://github.com/lifeinplus/united-credit-history-backend/blob/47a3b5bcf87ce36fc4ef6021cd31f68f00477919/src/models/UserModel.ts#L13-L22
+https://github.com/lifeinplus/united-credit-history-backend/blob/93958fc17b086bab32e2bda3bb1085ee6af655e1/src/models/UserModel.ts#L16-L28
 
 ## Middleware
 
@@ -130,4 +140,4 @@ Here are the available scripts for development and production:
 
 ---
 
-v1.12.0 © 2024 Artem Denisov
+v1.13.0 © 2024 Artem Denisov

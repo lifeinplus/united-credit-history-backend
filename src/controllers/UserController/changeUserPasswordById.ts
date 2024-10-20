@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 
+import { config } from "../../config";
 import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
@@ -14,7 +15,7 @@ const changeUserPasswordById = async (req: Request, res: Response) => {
         });
     }
 
-    if (!newPassword || newPassword.length < 4) {
+    if (!newPassword || newPassword.length < config.auth.passwordLengthMin) {
         return res.status(400).json({
             message: `Password is required and should be at least 4 characters long`,
         });
@@ -28,7 +29,7 @@ const changeUserPasswordById = async (req: Request, res: Response) => {
 
     try {
         const user = await UserModel.findById(id)
-            .select("-refreshToken")
+            .select("-refreshTokens")
             .exec();
 
         if (!user) {

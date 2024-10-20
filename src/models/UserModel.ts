@@ -5,9 +5,9 @@ interface User {
     creationDate: Date;
     firstName: string;
     lastName: string;
-    userName: string;
+    username: string;
     password: string;
-    refreshToken: string[];
+    refreshTokens: string[];
     roles: Record<string, number>;
 }
 
@@ -19,9 +19,9 @@ const UserSchema: Schema = new Schema(
         creationDate: { type: Date, required: true },
         firstName: { type: String },
         lastName: { type: String },
-        userName: { type: String, required: true, unique: true },
+        username: { type: String, required: true, unique: true },
         password: { type: String, required: true },
-        refreshToken: { type: [String] },
+        refreshTokens: { type: [String] },
         roles: { type: Schema.Types.Mixed },
     },
     { versionKey: false }
