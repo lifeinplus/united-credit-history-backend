@@ -140,4 +140,4 @@ Here are the available scripts for development and production:
 
 ---
 
-v1.12.0 © 2024 Artem Denisov
+v1.13.0 © 2024 Artem Denisov
