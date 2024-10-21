@@ -46,14 +46,14 @@ const login = async (req: Request, res: Response) => {
 
         const newAccessToken = jwt.sign(
             { username, roles: roleValues },
-            config.token.access.secret,
-            { expiresIn: config.token.access.expiresIn }
+            config.auth.accessToken.secret,
+            config.auth.accessToken.options
         );
 
         const newRefreshToken = jwt.sign(
             { username },
-            config.token.refresh.secret,
-            { expiresIn: config.token.refresh.expiresIn }
+            config.auth.refreshToken.secret,
+            config.auth.refreshToken.options
         );
 
         let refreshTokenArray = refreshTokens.filter(
@@ -82,12 +82,7 @@ const login = async (req: Request, res: Response) => {
 
         return res
             .status(200)
-            .cookie("jwt", newRefreshToken, {
-                httpOnly: true,
-                sameSite: "none",
-                secure: true,
-                maxAge: 24 * 60 * 60 * 1000,
-            })
+            .cookie("jwt", newRefreshToken, config.auth.cookieOptions)
             .json({
                 accessToken: newAccessToken,
                 avatarPath,

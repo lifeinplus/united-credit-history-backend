@@ -4,7 +4,7 @@ import path from "path";
 
 import { config } from "../config";
 
-const KB = config.fileUpload.sizeKb;
+const KB = config.server.fileUploadSizeKb;
 const FILE_SIZE_LIMIT = KB * 1024;
 
 const fileUploadLimiter = (allowedExtArray: string[]) => {
