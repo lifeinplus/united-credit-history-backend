@@ -19,7 +19,7 @@ const jwtVerifier = (req: UserRequest, res: Response, next: NextFunction) => {
     try {
         const decoded = jwt.verify(
             token,
-            config.token.access.secret
+            config.auth.accessToken.secret
         ) as UserJwtPayload;
 
         req.roles = decoded.roles;

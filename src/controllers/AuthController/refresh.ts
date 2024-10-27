@@ -26,7 +26,7 @@ const refresh = async (req: Request, res: Response) => {
         if (!foundUser) {
             const decoded = jwt.verify(
                 cookies.jwt,
-                config.token.refresh.secret
+                config.auth.refreshToken.secret
             ) as UserJwtPayload;
 
             Logging.warn("Attempted refresh token reuse at /auth/refresh");
@@ -55,7 +55,7 @@ const refresh = async (req: Request, res: Response) => {
 
         const decoded = jwt.verify(
             cookies.jwt,
-            config.token.refresh.secret
+            config.auth.refreshToken.secret
         ) as UserJwtPayload;
 
         if (username !== decoded.username) {
@@ -66,14 +66,14 @@ const refresh = async (req: Request, res: Response) => {
 
         const newAccessToken = jwt.sign(
             { username, roles: roleValues },
-            config.token.access.secret,
-            { expiresIn: config.token.access.expiresIn }
+            config.auth.accessToken.secret,
+            config.auth.accessToken.options
         );
 
         const newRefreshToken = jwt.sign(
             { username },
-            config.token.refresh.secret,
-            { expiresIn: config.token.refresh.expiresIn }
+            config.auth.refreshToken.secret,
+            config.auth.refreshToken.options
         );
 
         refreshTokenArray = refreshTokens.filter(
@@ -85,12 +85,7 @@ const refresh = async (req: Request, res: Response) => {
 
         return res
             .status(200)
-            .cookie("jwt", newRefreshToken, {
-                httpOnly: true,
-                sameSite: "none",
-                secure: true,
-                maxAge: 24 * 60 * 60 * 1000,
-            })
+            .cookie("jwt", newRefreshToken, config.auth.cookieOptions)
             .json({
                 accessToken: newAccessToken,
                 avatarPath,

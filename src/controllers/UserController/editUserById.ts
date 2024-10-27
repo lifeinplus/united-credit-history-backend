@@ -1,11 +1,13 @@
+import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 
+import { config } from "../../config";
 import { UserModel } from "../../models";
 import Logging from "../../library/Logging";
 
 const editUserById = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { roles } = req.body;
+    const { isResetPassword, roles } = req.body;
 
     if (!id) {
         return res.status(400).json({
@@ -24,6 +26,14 @@ const editUserById = async (req: Request, res: Response) => {
 
         if (roles) {
             user.roles = JSON.parse(roles);
+        }
+
+        if (isResetPassword) {
+            const hashedPassword = await bcrypt.hash(
+                config.auth.passwordDefaultReset,
+                10
+            );
+            user.password = hashedPassword;
         }
 
         await user.save();

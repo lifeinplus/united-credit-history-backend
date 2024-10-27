@@ -2,13 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import Logging from "../library/Logging";
 
 const requestLogger = (req: Request, res: Response, next: NextFunction) => {
-    Logging.infoIn(
-        `Method: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]]`
-    );
+    const { method, url } = req;
+    const { statusCode } = res;
+
+    Logging.infoIn(`Method: [{method}] - URL: [${url}]`, method);
 
     res.on("finish", () => {
         Logging.infoOut(
-            `Method: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]] - Status: [${res.statusCode}]`
+            `Method: [{method}] - URL: [${url}] - Status: [${statusCode}]`,
+            method
         );
     });
 
