@@ -17,7 +17,7 @@ const changeUserPasswordById = async (req: Request, res: Response) => {
 
     if (!newPassword || newPassword.length < config.auth.passwordLengthMin) {
         return res.status(400).json({
-            message: `Password is required and should be at least 4 characters long`,
+            message: `Password is required and should be at least ${config.auth.passwordLengthMin} characters long1`,
         });
     }
 
