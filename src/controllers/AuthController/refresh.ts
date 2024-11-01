@@ -40,7 +40,7 @@ const refresh = async (req: Request, res: Response) => {
                 await hackedUser.save();
             }
 
-            return res.sendStatus(403);
+            return res.sendStatus(401);
         }
 
         const {
@@ -59,7 +59,7 @@ const refresh = async (req: Request, res: Response) => {
         ) as UserJwtPayload;
 
         if (username !== decoded.username) {
-            return res.status(403).json({ message: "Username incorrect" });
+            return res.status(401).json({ message: "Username incorrect" });
         }
 
         const roleValues = Object.values(roles || {});
@@ -104,7 +104,7 @@ const refresh = async (req: Request, res: Response) => {
                 await foundUser.save();
             }
 
-            return res.status(403).json({ message: error.message });
+            return res.status(401).json({ message: error.message });
         }
 
         return res.status(500).json({ error });
