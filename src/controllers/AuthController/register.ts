@@ -23,7 +23,7 @@ const register = async (req: Request, res: Response) => {
         confirmPassword.length < config.auth.passwordLengthMin
     ) {
         return res.status(400).json({
-            message: `Passwords are required and should be at least 8 characters long`,
+            message: `Passwords are required and should be at least ${config.auth.passwordLengthMin} characters long`,
         });
     }
 

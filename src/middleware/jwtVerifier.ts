@@ -29,7 +29,7 @@ const jwtVerifier = (req: UserRequest, res: Response, next: NextFunction) => {
 
         if (error instanceof TokenExpiredError) {
             return res
-                .status(403)
+                .status(401)
                 .json({ message: "jwtVerifier: " + error.message });
         }
 
