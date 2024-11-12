@@ -64,9 +64,9 @@ The backend provides several API routes:
 
 -   **Auth** (`/auth`):
 
-    -   `GET /logout`: Logs out the user by clearing the refresh token from the cookie and the database.
     -   `GET /refresh`: Generates a new access token and refresh token when a valid refresh token is presented.
     -   `POST /login`: User login using a username and password. If valid, the server responds with an access token and a refresh token in a secure cookie.
+    -   `POST /logout`: Logs out the user by clearing the refresh token from the cookie and the database.
     -   `POST /register`: Registers a new user with a hashed password and assigns a default user role.
 
 -   **Common** (`/commons`): Manage common data entries related to credit history.
