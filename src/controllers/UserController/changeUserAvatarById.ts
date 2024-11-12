@@ -40,7 +40,10 @@ export const changeUserAvatarById = async (req: Request, res: Response) => {
         user.avatarName = avatarName;
         await user.save();
 
-        return res.json({ message: "Avatar uploaded successfully" });
+        return res.json({
+            avatarName,
+            message: "Avatar uploaded successfully",
+        });
     } catch (error) {
         Logging.error(error);
 
