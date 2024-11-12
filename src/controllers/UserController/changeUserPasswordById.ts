@@ -5,7 +5,7 @@ import { config } from "../../config";
 import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
-const changeUserPasswordById = async (req: Request, res: Response) => {
+export const changeUserPasswordById = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { currentPassword, newPassword } = req.body;
 
@@ -62,5 +62,3 @@ const changeUserPasswordById = async (req: Request, res: Response) => {
         return res.status(500).json({ error });
     }
 };
-
-export default changeUserPasswordById;

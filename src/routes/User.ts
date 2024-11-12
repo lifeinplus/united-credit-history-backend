@@ -6,6 +6,7 @@ import {
     changeUserPasswordById,
     deleteUserById,
     editUserById,
+    getUserAvatarByIdAndFilename,
     getUsersPaginated,
     getUsers,
 } from "../controllers/UserController";
@@ -14,6 +15,7 @@ import { fileUploadLimiter, pagination, rolesVerifier } from "../middleware";
 const router = express.Router();
 
 router.get("/", rolesVerifier(ROLE_LIST.admin), getUsers);
+router.get("/:id/avatar/:filename", getUserAvatarByIdAndFilename);
 router.get(
     "/paginated",
     rolesVerifier(ROLE_LIST.admin),

@@ -64,9 +64,9 @@ The backend provides several API routes:
 
 -   **Auth** (`/auth`):
 
-    -   `GET /logout`: Logs out the user by clearing the refresh token from the cookie and the database.
     -   `GET /refresh`: Generates a new access token and refresh token when a valid refresh token is presented.
     -   `POST /login`: User login using a username and password. If valid, the server responds with an access token and a refresh token in a secure cookie.
+    -   `POST /logout`: Logs out the user by clearing the refresh token from the cookie and the database.
     -   `POST /register`: Registers a new user with a hashed password and assigns a default user role.
 
 -   **Common** (`/commons`): Manage common data entries related to credit history.
@@ -110,7 +110,7 @@ The following data models are used:
 -   **Person**: Represents a person's data, including name, birth date, and document details (series, number, and issue date).
 -   **Report**: Contains details of a report, including application number, client name, and report creation date.
 -   **Request Count**: Tracks the number of requests related to credit history over various periods (e.g., last 30 days, last 24 months) including microcredit requests.
--   **User**: Represents user information, including avatarPath, creation date, user names, password, refresh tokens, and roles.
+-   **User**: Represents user information, including avatarName, creation date, user names, password, refresh tokens, and roles.
 
 https://github.com/lifeinplus/united-credit-history-backend/blob/93958fc17b086bab32e2bda3bb1085ee6af655e1/src/models/UserModel.ts#L16-L28
 
@@ -140,4 +140,4 @@ Here are the available scripts for development and production:
 
 ---
 
-v1.15.0 © 2024 Artem Denisov
+v1.16.0 © 2024 Artem Denisov

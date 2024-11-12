@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
-const getUsers = async (req: Request, res: Response) => {
+export const getUsers = async (req: Request, res: Response) => {
     try {
         const users = await UserModel.find()
             .select("-password -refreshTokens")
@@ -28,5 +28,3 @@ const getUsers = async (req: Request, res: Response) => {
         return res.status(500).json({ error });
     }
 };
-
-export default getUsers;

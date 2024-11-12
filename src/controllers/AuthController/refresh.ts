@@ -45,7 +45,7 @@ const refresh = async (req: Request, res: Response) => {
 
         const {
             _id: userId,
-            avatarPath,
+            avatarName,
             firstName,
             lastName,
             refreshTokens,
@@ -88,7 +88,7 @@ const refresh = async (req: Request, res: Response) => {
             .cookie("jwt", newRefreshToken, config.auth.cookieOptions)
             .json({
                 accessToken: newAccessToken,
-                avatarPath,
+                avatarName,
                 firstName,
                 lastName,
                 roles: roleValues,

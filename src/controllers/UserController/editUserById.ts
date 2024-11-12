@@ -5,7 +5,7 @@ import { config } from "../../config";
 import { UserModel } from "../../models";
 import Logging from "../../library/Logging";
 
-const editUserById = async (req: Request, res: Response) => {
+export const editUserById = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { isResetPassword, roles } = req.body;
 
@@ -51,5 +51,3 @@ const editUserById = async (req: Request, res: Response) => {
         return res.status(500).json({ error });
     }
 };
-
-export default editUserById;

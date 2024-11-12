@@ -4,7 +4,7 @@ import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 import type { PaginationOptions } from "../../types";
 
-const getUsersPaginated = async (req: Request, res: Response) => {
+export const getUsersPaginated = async (req: Request, res: Response) => {
     const {
         page,
         limit,
@@ -61,5 +61,3 @@ const getUsersPaginated = async (req: Request, res: Response) => {
         return res.status(500).json({ error });
     }
 };
-
-export default getUsersPaginated;

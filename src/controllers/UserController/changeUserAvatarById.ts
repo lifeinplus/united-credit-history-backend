@@ -5,7 +5,7 @@ import path from "path";
 import Logging from "../../library/Logging";
 import { UserModel } from "../../models";
 
-const changeUserAvatarById = async (req: Request, res: Response) => {
+export const changeUserAvatarById = async (req: Request, res: Response) => {
     const { id } = req.params;
     const avatar = req.files?.avatar as UploadedFile;
 
@@ -16,8 +16,8 @@ const changeUserAvatarById = async (req: Request, res: Response) => {
     }
 
     try {
-        const extName = path.extname(avatar.name);
-        const relativePath = `uploads/users/${id}/avatar${extName}`;
+        const avatarName = "avatar" + path.extname(avatar.name);
+        const relativePath = `uploads/users/${id}/${avatarName}`;
 
         const uploadPath = path.join(
             __dirname,
@@ -37,10 +37,13 @@ const changeUserAvatarById = async (req: Request, res: Response) => {
             return res.status(404).send("User not found");
         }
 
-        user.avatarPath = relativePath;
+        user.avatarName = avatarName;
         await user.save();
 
-        return res.json({ message: "Avatar uploaded successfully" });
+        return res.json({
+            avatarName,
+            message: "Avatar uploaded successfully",
+        });
     } catch (error) {
         Logging.error(error);
 
@@ -51,5 +54,3 @@ const changeUserAvatarById = async (req: Request, res: Response) => {
         return res.status(500).json({ error });
     }
 };
-
-export default changeUserAvatarById;

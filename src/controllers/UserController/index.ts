@@ -1,15 +1,7 @@
-import changeUserAvatarById from "./changeUserAvatarById";
-import changeUserPasswordById from "./changeUserPasswordById";
-import deleteUserById from "./deleteUserById";
-import editUserById from "./editUserById";
-import getUsers from "./getUsers";
-import getUsersPaginated from "./getUsersPaginated";
-
-export {
-    changeUserAvatarById,
-    changeUserPasswordById,
-    deleteUserById,
-    editUserById,
-    getUsers,
-    getUsersPaginated,
-};
+export * from "./changeUserAvatarById";
+export * from "./changeUserPasswordById";
+export * from "./deleteUserById";
+export * from "./editUserById";
+export * from "./getUserAvatarByIdAndFilename";
+export * from "./getUsers";
+export * from "./getUsersPaginated";
