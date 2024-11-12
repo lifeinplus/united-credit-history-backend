@@ -3,7 +3,6 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import fileUpload from "express-fileupload";
 import mongoose from "mongoose";
-import path from "path";
 
 import { config } from "./config";
 import ROLE_LIST from "./config/role_list";
@@ -60,25 +59,6 @@ const StartServer = () => {
     app.use("/persons", Person);
     app.use("/reports", Report);
     app.use("/request-counts", RequestCount);
-
-    app.use("/uploads/users/:userid/:filename", (req, res) => {
-        const filePath = path.join(
-            __dirname,
-            "..",
-            "uploads",
-            "users",
-            req.params.userid,
-            req.params.filename
-        );
-
-        res.sendFile(filePath, (err) => {
-            if (err) {
-                console.error("File not found:", err);
-                res.status(404).send("File not found");
-            }
-        });
-    });
-
     app.use("/users", User);
 
     app.use((req, res, next) => {

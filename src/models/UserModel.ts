@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface User {
-    avatarPath: string;
+    avatarName: string;
     creationDate: Date;
     firstName: string;
     lastName: string;
@@ -15,7 +15,7 @@ interface UserDocument extends User, Document {}
 
 const UserSchema: Schema = new Schema(
     {
-        avatarPath: { type: String },
+        avatarName: { type: String },
         creationDate: { type: Date, required: true },
         firstName: { type: String },
         lastName: { type: String },

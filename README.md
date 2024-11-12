@@ -110,7 +110,7 @@ The following data models are used:
 -   **Person**: Represents a person's data, including name, birth date, and document details (series, number, and issue date).
 -   **Report**: Contains details of a report, including application number, client name, and report creation date.
 -   **Request Count**: Tracks the number of requests related to credit history over various periods (e.g., last 30 days, last 24 months) including microcredit requests.
--   **User**: Represents user information, including avatarPath, creation date, user names, password, refresh tokens, and roles.
+-   **User**: Represents user information, including avatarName, creation date, user names, password, refresh tokens, and roles.
 
 https://github.com/lifeinplus/united-credit-history-backend/blob/93958fc17b086bab32e2bda3bb1085ee6af655e1/src/models/UserModel.ts#L16-L28
 

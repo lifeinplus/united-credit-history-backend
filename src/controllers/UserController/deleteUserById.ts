@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { UserModel } from "../../models";
 import Logging from "../../library/Logging";
 
-const deleteUserById = async (req: Request, res: Response) => {
+export const deleteUserById = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     if (!id) {
@@ -25,5 +25,3 @@ const deleteUserById = async (req: Request, res: Response) => {
         return res.status(500).json({ error });
     }
 };
-
-export default deleteUserById;
