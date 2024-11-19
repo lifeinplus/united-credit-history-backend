@@ -15,6 +15,7 @@ export interface PaginationOptions {
 
 export interface UserRequest extends Request {
     roles?: number[];
+    userId?: string;
 }
 
 export interface UserJwtPayload extends JwtPayload {

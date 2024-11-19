@@ -7,7 +7,12 @@ import mongoose from "mongoose";
 import { config } from "./config";
 import ROLE_LIST from "./config/role_list";
 import Logging from "./library/Logging";
-import { jwtVerifier, requestLogger, rolesVerifier } from "./middleware";
+import {
+    jwtVerifier,
+    passwordVerifier,
+    requestLogger,
+    rolesVerifier,
+} from "./middleware";
 
 import {
     Auth,
@@ -50,6 +55,7 @@ const StartServer = () => {
 
     app.use("/auth", Auth);
     app.use(jwtVerifier);
+    app.use(passwordVerifier);
     app.use(rolesVerifier(ROLE_LIST.user));
     app.use("/commons", Common);
     app.use("/delinquencies", Delinquency);

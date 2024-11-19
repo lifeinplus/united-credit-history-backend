@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 import { config } from "../../config";
 import Logging from "../../library/Logging";
@@ -28,30 +29,67 @@ export const changeUserPasswordById = async (req: Request, res: Response) => {
     }
 
     try {
-        const user = await UserModel.findById(id)
+        const foundUser = await UserModel.findById(id)
             .select("-refreshTokens")
             .exec();
 
-        if (!user) {
-            return res.sendStatus(204);
+        if (!foundUser) {
+            return res.status(401).json({ message: "User not found" });
         }
 
-        const match = await bcrypt.compare(currentPassword, user.password);
+        const {
+            _id: userId,
+            avatarName,
+            firstName,
+            lastName,
+            password,
+            roles,
+            username,
+        } = foundUser;
 
-        if (!match) {
+        const isMatch = await bcrypt.compare(currentPassword, password);
+
+        if (!isMatch) {
             return res
                 .status(409)
                 .json({ message: "Current password is incorrect" });
         }
 
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const roleValues = Object.values(roles || {});
 
-        user.password = hashedPassword;
-        await user.save();
+        const newAccessToken = jwt.sign(
+            { userId, username, roles: roleValues },
+            config.auth.accessToken.secret,
+            config.auth.accessToken.options
+        );
+
+        const newRefreshToken = jwt.sign(
+            { username },
+            config.auth.refreshToken.secret,
+            config.auth.refreshToken.options
+        );
+
+        const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+        foundUser.isPasswordChangeRequired = false;
+        foundUser.password = newHashedPassword;
+        foundUser.refreshTokens = [newRefreshToken];
+
+        await foundUser.save();
 
         return res
             .status(200)
-            .json({ message: "Password successfully changed" });
+            .cookie("jwt", newRefreshToken, config.auth.cookieOptions)
+            .json({
+                accessToken: newAccessToken,
+                avatarName,
+                firstName,
+                isPasswordChangeRequired: false,
+                lastName,
+                roles: roleValues,
+                userId,
+                username,
+            });
     } catch (error) {
         Logging.error(error);
 

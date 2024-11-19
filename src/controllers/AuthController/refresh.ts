@@ -47,6 +47,7 @@ const refresh = async (req: Request, res: Response) => {
             _id: userId,
             avatarName,
             firstName,
+            isPasswordChangeRequired,
             lastName,
             refreshTokens,
             roles,
@@ -65,7 +66,7 @@ const refresh = async (req: Request, res: Response) => {
         const roleValues = Object.values(roles || {});
 
         const newAccessToken = jwt.sign(
-            { username, roles: roleValues },
+            { userId, username, roles: roleValues },
             config.auth.accessToken.secret,
             config.auth.accessToken.options
         );
@@ -90,6 +91,7 @@ const refresh = async (req: Request, res: Response) => {
                 accessToken: newAccessToken,
                 avatarName,
                 firstName,
+                isPasswordChangeRequired,
                 lastName,
                 roles: roleValues,
                 userId,
