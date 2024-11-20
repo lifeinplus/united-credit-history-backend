@@ -33,6 +33,8 @@ export const editUserById = async (req: Request, res: Response) => {
                 config.auth.passwordDefaultReset,
                 10
             );
+
+            user.isPasswordChangeRequired = true;
             user.password = hashedPassword;
         }
 

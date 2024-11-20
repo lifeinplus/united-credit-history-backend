@@ -4,6 +4,7 @@ interface User {
     avatarName: string;
     creationDate: Date;
     firstName: string;
+    isPasswordChangeRequired: boolean;
     lastName: string;
     username: string;
     password: string;
@@ -18,6 +19,7 @@ const UserSchema: Schema = new Schema(
         avatarName: { type: String },
         creationDate: { type: Date, required: true },
         firstName: { type: String },
+        isPasswordChangeRequired: { type: Boolean },
         lastName: { type: String },
         username: { type: String, required: true, unique: true },
         password: { type: String, required: true },

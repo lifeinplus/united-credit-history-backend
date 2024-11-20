@@ -90,13 +90,14 @@ The backend provides several API routes:
 -   **User** (`/users`):
 
     -   `GET /`: Retrieves all users sorted by creation date, returning user data or a 404 status if no users are found.
+    -   `GET /:id/avatar/:filename`: Serves a user’s avatar file based on their ID and filename, retrieving it from the uploads/users directory.
     -   `GET /paginated`: Retrieves paginated users, filtering by username, and returns user data along with pagination details.
     -   `PUT /:id/avatar`: Changes a user’s avatar by ID, saving the uploaded file and updating the user’s avatar path.
     -   `PUT /:id/password`: Allows a user to change their password by providing their current password and new password.
     -   `PUT /:id`: Edits a user’s roles by ID, returning the updated user or a 204 status if the user doesn’t exist.
     -   `DELETE /:id`: Deletes a user by ID, returning the result or a 204 status if the user doesn’t exist.
 
-https://github.com/lifeinplus/united-credit-history-backend/blob/59c74a811cd121af6921044af2a65cdf7b551038/src/routes/User.ts#L14-L22
+https://github.com/lifeinplus/united-credit-history-backend/blob/35e9ebdb25bf13317ae6d897ac4eae6d67d64756/src/routes/User.ts#L17-L24
 
 ## Models
 
@@ -112,7 +113,7 @@ The following data models are used:
 -   **Request Count**: Tracks the number of requests related to credit history over various periods (e.g., last 30 days, last 24 months) including microcredit requests.
 -   **User**: Represents user information, including avatarName, creation date, user names, password, refresh tokens, and roles.
 
-https://github.com/lifeinplus/united-credit-history-backend/blob/93958fc17b086bab32e2bda3bb1085ee6af655e1/src/models/UserModel.ts#L16-L28
+https://github.com/lifeinplus/united-credit-history-backend/blob/35e9ebdb25bf13317ae6d897ac4eae6d67d64756/src/models/UserModel.ts#L17-L27
 
 ## Middleware
 
@@ -121,6 +122,7 @@ The project uses the following middleware:
 -   **File Upload Limiter**: Limits file uploads by checking size and allowed file extensions, returning an error if files are missing, too large, or have disallowed extensions.
 -   **JWT Verifier**: Validates JWT tokens for secure endpoints. The `jwtVerifier` middleware checks if the token is present, verifies it, and extracts the user roles. If the token is expired or invalid, it responds with appropriate status codes.
 -   **Pagination**: Extracts pagination options (limit, page, and search query) from the request and makes them available in the response for routes that return paginated results.
+-   **Password Verifier**: Checks if the user is required to change their password before accessing specific routes.
 -   **Request Logger**: Logs incoming requests and their corresponding status codes after completion. The `requestLogger` middleware records method, URL, and IP address for both the incoming request and the response.
 -   **Roles Verifier**: Ensures that only users with specific roles can access certain endpoints. It checks if the user's roles match any of the allowed roles for the route.
 -   **CORS**: Configured based on environment variables to allow cross-origin requests.
@@ -140,4 +142,4 @@ Here are the available scripts for development and production:
 
 ---
 
-v1.16.0 © 2024 Artem Denisov
+v1.17.0 © 2024 Artem Denisov

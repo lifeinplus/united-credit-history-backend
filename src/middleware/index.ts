@@ -11,3 +11,5 @@ export {
     requestLogger,
     rolesVerifier,
 };
+
+export * from "./passwordVerifier";

@@ -13,7 +13,7 @@ const login = async (req: Request, res: Response) => {
     if (!reqUsername || !reqPassword) {
         return res
             .status(400)
-            .json({ message: `Username and password required` });
+            .json({ message: "Username and password required" });
     }
 
     try {
@@ -22,13 +22,14 @@ const login = async (req: Request, res: Response) => {
         }).exec();
 
         if (!foundUser) {
-            return res.status(401).json({ message: `User not found` });
+            return res.status(401).json({ message: "User not found" });
         }
 
         const {
             _id: userId,
             avatarName,
             firstName,
+            isPasswordChangeRequired,
             lastName,
             password,
             refreshTokens,
@@ -36,16 +37,16 @@ const login = async (req: Request, res: Response) => {
             username,
         } = foundUser;
 
-        const match = await bcrypt.compare(reqPassword, password);
+        const isMatch = await bcrypt.compare(reqPassword, password);
 
-        if (!match) {
+        if (!isMatch) {
             return res.status(401).json({ message: "Password is incorrect" });
         }
 
         const roleValues = Object.values(roles || {});
 
         const newAccessToken = jwt.sign(
-            { username, roles: roleValues },
+            { userId, username, roles: roleValues },
             config.auth.accessToken.secret,
             config.auth.accessToken.options
         );
@@ -87,6 +88,7 @@ const login = async (req: Request, res: Response) => {
                 accessToken: newAccessToken,
                 avatarName,
                 firstName,
+                isPasswordChangeRequired,
                 lastName,
                 roles: roleValues,
                 userId,
